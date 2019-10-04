@@ -19,7 +19,7 @@
 				<DataGridTextColumn Header="PostalCode" Binding="{Binding PostalCode}" Width="auto"/>
 				<DataGridTextColumn Header="PhoneNumber" Binding="{Binding PhoneNumber}" Width="auto"/>
 				<DataGridTextColumn Header="BirthDate" Binding="{Binding BirthDate}" Width="auto"/>
-				<DataGridTextColumn Header="Age" Binding="{Binding Age}" Width="auto"/>
+				<DataGridTextColumn Header="Age" Binding="{Binding Age}" Width="auto" IsReadOnly="True" />
 			</DataGrid.Columns>
 		</DataGrid>
 	</Grid>
