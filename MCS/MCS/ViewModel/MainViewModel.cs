@@ -1,4 +1,6 @@
+using AutoMapper;
 using GalaSoft.MvvmLight;
+using MCS.DTO;
 using MCS.Models;
 using System;
 using System.Collections.ObjectModel;
@@ -19,13 +21,17 @@ namespace MCS.ViewModel
 	/// </summary>
 	public class MainViewModel : ViewModelBase
 	{
-		public ObservableCollection<Person> People { get; set; }
+		private readonly IMapper mapper;
 
-		public MainViewModel()
+		public ObservableCollection<PersonForListDto> People { get; set; }
+
+		public MainViewModel(IMapper mapper)
 		{
-			this.People = new ObservableCollection<Person>();
+			this.mapper = mapper;
 
-			this.People.Add(new Person
+			this.People = new ObservableCollection<PersonForListDto>();
+
+			Person person = new Person
 			{
 				Id = 1,
 				FirstName = "John",
@@ -36,7 +42,11 @@ namespace MCS.ViewModel
 				PostalCode = "12-123",
 				PhoneNumber = "123456789",
 				BirthDate = DateTime.Now.AddYears(-30)
-			});
+			};
+
+			PersonForListDto personForListDto = this.mapper.Map<PersonForListDto>(person);
+
+			this.People.Add(personForListDto);
 		}
 	}
 }

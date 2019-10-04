@@ -12,8 +12,10 @@
   See http://www.galasoft.ch/mvvm
 */
 
+using AutoMapper;
 using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
+using MCS.Helpers;
 
 namespace MCS.ViewModel
 {
@@ -30,16 +32,21 @@ namespace MCS.ViewModel
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
-            ////if (ViewModelBase.IsInDesignModeStatic)
-            ////{
-            ////    // Create design time view services and models
-            ////    SimpleIoc.Default.Register<IDataService, DesignDataService>();
-            ////}
-            ////else
-            ////{
-            ////    // Create run time view services and models
-            ////    SimpleIoc.Default.Register<IDataService, DataService>();
-            ////}
+			////if (ViewModelBase.IsInDesignModeStatic)
+			////{
+			////    // Create design time view services and models
+			////    SimpleIoc.Default.Register<IDataService, DesignDataService>();
+			////}
+			////else
+			////{
+			////    // Create run time view services and models
+			////    SimpleIoc.Default.Register<IDataService, DataService>();
+			////}
+
+			var config = new AutoMapperConfiguration().Configure();
+			var mapper = config.CreateMapper();
+
+			SimpleIoc.Default.Register<IMapper>(() => mapper);
 
             SimpleIoc.Default.Register<MainViewModel>();
         }
