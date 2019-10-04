@@ -73,6 +73,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\DataGridCellEditEndingEventArgsToPersonForListDtoConverter.cs" />
     <Compile Include="Helpers\AutoMapperProfile.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Services\DateTimeService.cs" />

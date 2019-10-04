@@ -6,6 +6,7 @@ using MCS.Models;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Controls;
 
 namespace MCS.ViewModel
 {
@@ -26,8 +27,10 @@ namespace MCS.ViewModel
 		private readonly IMapper mapper;
 
 		private RelayCommand addNewPersonRowCommand;
+		private RelayCommand<DataGridCellEditEndingEventArgs> editPersonRowCommand;
 
 		private bool addNewPersonRowCommandCanExecute;
+		private bool editPersonRowCommandCanExecute;
 
 		public RelayCommand AddNewPersonRowCommand
 		{
@@ -35,7 +38,17 @@ namespace MCS.ViewModel
 			{
 				return addNewPersonRowCommand ??
 					   (addNewPersonRowCommand =
-						   new RelayCommand(AddNewPersonRow, addNewPersonRowCommandCanExecute));
+						   new RelayCommand(AddNewPersonRow, this.addNewPersonRowCommandCanExecute));
+			}
+		}
+  
+		public RelayCommand<DataGridCellEditEndingEventArgs> EditPersonRowCommand
+		{
+			get
+			{
+				return editPersonRowCommand ??
+					   (editPersonRowCommand =
+						   new RelayCommand<DataGridCellEditEndingEventArgs>(param => this.EditPersonRow(param.EditingElement.DataContext as PersonForListDto), this.editPersonRowCommandCanExecute));
 			}
 		}
 
@@ -44,6 +57,8 @@ namespace MCS.ViewModel
 		public MainViewModel(IMapper mapper)
 		{
 			this.mapper = mapper;
+
+			this.InitializeCanExecutes();
 
 			this.People = new ObservableCollection<PersonForListDto>();
 
@@ -73,6 +88,25 @@ namespace MCS.ViewModel
 				Age = "0",
 				IsNew = true
 			});
+		}
+
+		private void EditPersonRow(PersonForListDto editedPerson)
+		{
+			if (!editedPerson.IsEdited)
+			{
+				var person = this.People.FirstOrDefault(x => x.Id == editedPerson.Id);
+
+				if (person != null)
+				{
+					person.IsEdited = true;
+				}
+			}
+		}
+
+		private void InitializeCanExecutes()
+		{
+			this.addNewPersonRowCommandCanExecute = true;
+			this.editPersonRowCommandCanExecute = true;
 		}
 	}
 }

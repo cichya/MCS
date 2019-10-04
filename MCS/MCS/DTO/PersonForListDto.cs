@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace MCS.DTO
 {
-	public class PersonForListDto
+	public class PersonForListDto : INotifyPropertyChanged
 	{
+		private bool isNew;
+		private bool isEdited;
+
 		public int Id { get; set; }
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
@@ -18,6 +22,32 @@ namespace MCS.DTO
 		public string PhoneNumber { get; set; }
 		public DateTime BirthDate { get; set; }
 		public string Age { get; set; }
-		public bool IsNew { get; set; }
+
+		public bool IsNew
+		{
+			get => isNew;
+			set
+			{
+				isNew = value;
+				this.RaisePropertyChanged(nameof(this.IsNew));
+			}
+		}
+		
+		public bool IsEdited
+		{
+			get => isEdited;
+			set
+			{
+				isEdited = value;
+				this.RaisePropertyChanged(nameof(this.IsEdited));
+			}
+		}
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		private void RaisePropertyChanged(string propertyName)
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		}
 	}
 }
