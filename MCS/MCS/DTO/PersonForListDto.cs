@@ -21,7 +21,7 @@ namespace MCS.DTO
 		public string ApartmentNumber { get; set; }
 		public string PostalCode { get; set; }
 		public string PhoneNumber { get; set; }
-		public DateTime BirthDate { get; set; }
+		public DateTime? BirthDate { get; set; }
 		public string Age { get; set; }
 
 		public bool IsNew

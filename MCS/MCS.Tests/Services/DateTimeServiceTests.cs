@@ -12,6 +12,18 @@ namespace MCS.Tests.Services
 	public class DateTimeServiceTests
 	{
 		[TestMethod]
+		public void CalculateAge_Birth_Null_Return_0_Test()
+		{
+			DateTime? birth = null;
+
+			var target = new DateTimeService();
+
+			int result = target.CalculateAge(birth);
+
+			Assert.AreEqual(0, result);
+		}
+
+		[TestMethod]
 		public void CalculateAge_Equal_3_Years_Return_2_Test()
 		{
 			DateTime birth = DateTime.Now.AddYears(-3);

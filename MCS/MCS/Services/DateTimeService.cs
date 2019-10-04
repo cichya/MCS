@@ -8,11 +8,16 @@ namespace MCS.Services
 {
 	public class DateTimeService : IDateTimeService
 	{
-		public int CalculateAge(DateTime birth)
+		public int CalculateAge(DateTime? birth)
 		{
-			var age = DateTime.Today.Year - birth.Year;
+			if (birth == null)
+			{
+				return 0;
+			}
 
-			if (birth.AddYears(age) > DateTime.Today)
+			var age = DateTime.Today.Year - birth.Value.Year;
+
+			if (birth.Value.AddYears(age) > DateTime.Today)
 			{
 				age--;
 			}
