@@ -28,9 +28,11 @@ namespace MCS.ViewModel
 
 		private RelayCommand addNewPersonRowCommand;
 		private RelayCommand<DataGridCellEditEndingEventArgs> editPersonRowCommand;
+		private RelayCommand<int> deletePersonRowCommand;
 
 		private bool addNewPersonRowCommandCanExecute;
 		private bool editPersonRowCommandCanExecute;
+		private bool deletePersonRowCommandCanExecute;
 
 		public RelayCommand AddNewPersonRowCommand
 		{
@@ -49,6 +51,16 @@ namespace MCS.ViewModel
 				return editPersonRowCommand ??
 					   (editPersonRowCommand =
 						   new RelayCommand<DataGridCellEditEndingEventArgs>(param => this.EditPersonRow(param.EditingElement.DataContext as PersonForListDto), this.editPersonRowCommandCanExecute));
+			}
+		}
+
+		public RelayCommand<int> DeletePersonRowCommand
+		{
+			get
+			{
+				return deletePersonRowCommand ??
+					   (deletePersonRowCommand =
+						   new RelayCommand<int>(param => this.DeletePersonRow(param), this.deletePersonRowCommandCanExecute));
 			}
 		}
 
@@ -92,13 +104,22 @@ namespace MCS.ViewModel
 
 		private void EditPersonRow(PersonForListDto editedPerson)
 		{
-			if (!editedPerson.IsEdited)
-			{
-				var person = this.People.FirstOrDefault(x => x.Id == editedPerson.Id);
+			editedPerson.IsEdited = true;
+		}
 
-				if (person != null)
+		private void DeletePersonRow(int id)
+		{
+			PersonForListDto person = this.People.FirstOrDefault(x => x.Id == id);
+			
+			if (person != null)
+			{
+				if (person.IsNew)
 				{
-					person.IsEdited = true;
+					this.People.Remove(person);
+				}
+				else
+				{
+					person.IsDeleted = !person.IsDeleted;
 				}
 			}
 		}
@@ -107,6 +128,7 @@ namespace MCS.ViewModel
 		{
 			this.addNewPersonRowCommandCanExecute = true;
 			this.editPersonRowCommandCanExecute = true;
+			this.deletePersonRowCommandCanExecute = true;
 		}
 	}
 }

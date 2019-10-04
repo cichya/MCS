@@ -13,6 +13,7 @@
 	<Window.Resources>
 		<ResourceDictionary>
 			<converters:DataGridCellEditEndingEventArgsToPersonForListDtoConverter x:Key="DataGridCellEditEndingEventArgsToPersonForListDtoConverter"/>
+			<converters:BoolToDeleteButtonContentConverter x:Key="BoolToDeleteButtonContentConverter"/>
 			<Style x:Key="NewPersonDataGridRow" TargetType="{x:Type DataGridRow}">
 				<Setter Property="BorderBrush" Value="Green" />
 				<Setter Property="BorderThickness" Value="1" />
@@ -40,6 +41,11 @@
 							<Setter Property="BorderBrush" Value="Blue" />
 							<Setter Property="BorderThickness" Value="1" />
 						</DataTrigger>
+						<DataTrigger Binding="{Binding IsDeleted}"
+                                 Value="True">
+							<Setter Property="BorderBrush" Value="Red" />
+							<Setter Property="BorderThickness" Value="1" />
+						</DataTrigger>
 					</Style.Triggers>
 				</Style>
 			</DataGrid.RowStyle>
@@ -54,6 +60,13 @@
 				<DataGridTextColumn Header="PhoneNumber" Binding="{Binding PhoneNumber}" Width="auto"/>
 				<DataGridTextColumn Header="BirthDate" Binding="{Binding BirthDate}" Width="auto"/>
 				<DataGridTextColumn Header="Age" Binding="{Binding Age}" Width="auto" IsReadOnly="True" />
+				<DataGridTemplateColumn>
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<Button Content="{Binding IsDeleted, Converter={StaticResource BoolToDeleteButtonContentConverter}}" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext.DeletePersonRowCommand}" CommandParameter="{Binding Id}" />
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
 			</DataGrid.Columns>
 		</DataGrid>
 		<Grid>
