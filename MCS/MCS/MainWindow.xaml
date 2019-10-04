@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MCS"
+        xmlns:local="clr-namespace:MCS.Helpers"
 		xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
 		xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Platform"
 		xmlns:converters="clr-namespace:MCS.Converters"
@@ -14,6 +14,7 @@
 		<ResourceDictionary>
 			<converters:DataGridCellEditEndingEventArgsToPersonForListDtoConverter x:Key="DataGridCellEditEndingEventArgsToPersonForListDtoConverter"/>
 			<converters:BoolToDeleteButtonContentConverter x:Key="BoolToDeleteButtonContentConverter"/>
+			<BitmapImage x:Key="ErrorImageResource" UriSource="./Static/error.png" />
 			<Style x:Key="NewPersonDataGridRow" TargetType="{x:Type DataGridRow}">
 				<Setter Property="BorderBrush" Value="Green" />
 				<Setter Property="BorderThickness" Value="1" />
@@ -22,7 +23,7 @@
 	</Window.Resources>
 
 	<StackPanel>
-		<DataGrid ItemsSource="{Binding People}" MinHeight="255" AutoGenerateColumns="False" CanUserAddRows="False">
+		<DataGrid x:Name="PeopleDataGrid" ItemsSource="{Binding People}" MinHeight="255" AutoGenerateColumns="False" CanUserAddRows="False" >
 			<i:Interaction.Triggers>
 				<i:EventTrigger EventName="CellEditEnding">
 					<cmd:EventToCommand PassEventArgsToCommand="True" Command="{Binding EditPersonRowCommand}"/>
@@ -47,11 +48,31 @@
 							<Setter Property="BorderThickness" Value="1" />
 						</DataTrigger>
 					</Style.Triggers>
+					<Setter Property="ValidationErrorTemplate">
+						<Setter.Value>
+							<ControlTemplate>
+								<Image Source="{StaticResource ErrorImageResource}"
+									ToolTip="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGridRow}}, Path=(Validation.Errors)[0].ErrorContent}"
+									Margin="0"
+									Width="11" Height="11" />		
+							</ControlTemplate>
+						</Setter.Value>
+					</Setter>
 				</Style>
 			</DataGrid.RowStyle>
 			<DataGrid.Columns>
-				<DataGridTextColumn Header="Lp." Binding="{Binding Id}" Width="auto"/>
-				<DataGridTextColumn Header="FirstName" Binding="{Binding FirstName}" Width="auto"/>
+				<DataGridTextColumn Header="Lp." Binding="{Binding Id}" Width="auto" IsReadOnly="True"/>
+				
+				<DataGridTextColumn x:Name="FirstNameDataGridTextColumn" Header="FirstName">
+					<DataGridTextColumn.Binding>
+						<Binding Path="FirstName">
+							<Binding.ValidationRules>
+								<local:PersonCellValidationRules />
+							</Binding.ValidationRules>
+						</Binding>
+					</DataGridTextColumn.Binding>
+				</DataGridTextColumn>
+
 				<DataGridTextColumn Header="LastName" Binding="{Binding LastName}" Width="auto"/>
 				<DataGridTextColumn Header="StreetName" Binding="{Binding StreetName}" Width="auto"/>
 				<DataGridTextColumn Header="HouseNumber" Binding="{Binding HouseNumber}" Width="auto"/>
@@ -79,5 +100,6 @@
 			<Button Grid.Column="1" Command="{Binding RelayCommandSaveChangesCommand}" Content="Save" />
 			<Button Grid.Column="2" Command="{Binding DiscardChangesCommand}" Content="Cancel" />
 		</Grid>
+
 	</StackPanel>
 </Window>
