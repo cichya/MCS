@@ -1,4 +1,7 @@
 using GalaSoft.MvvmLight;
+using MCS.Models;
+using System;
+using System.Collections.ObjectModel;
 
 namespace MCS.ViewModel
 {
@@ -16,13 +19,24 @@ namespace MCS.ViewModel
 	/// </summary>
 	public class MainViewModel : ViewModelBase
 	{
-		/// <summary>
-		/// Initializes a new instance of the MainViewModel class.
-		/// </summary>
+		public ObservableCollection<Person> People { get; set; }
+
 		public MainViewModel()
 		{
+			this.People = new ObservableCollection<Person>();
 
+			this.People.Add(new Person
+			{
+				Id = 1,
+				FirstName = "John",
+				LastName = "Kovalsky",
+				StreetName = "Wiejska",
+				HouseNumber = "1",
+				ApartmentNumber = "2",
+				PostalCode = "12-123",
+				PhoneNumber = "123456789",
+				BirthDate = DateTime.Now.AddYears(-30)
+			});
 		}
-		public string MyProperty => "test";
 	}
 }
