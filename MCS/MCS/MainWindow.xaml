@@ -7,7 +7,20 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
 		DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
-    <Grid>
-		<TextBox Text="{Binding MyProperty, Mode=OneWay}" />
+	<Grid>
+		<DataGrid ItemsSource="{Binding People}" MinHeight="255" AutoGenerateColumns="False">
+			<DataGrid.Columns>
+				<DataGridTextColumn Header="Lp." Binding="{Binding Id}" Width="auto"/>
+				<DataGridTextColumn Header="FirstName" Binding="{Binding FirstName}" Width="auto"/>
+				<DataGridTextColumn Header="LastName" Binding="{Binding LastName}" Width="auto"/>
+				<DataGridTextColumn Header="StreetName" Binding="{Binding StreetName}" Width="auto"/>
+				<DataGridTextColumn Header="HouseNumber" Binding="{Binding HouseNumber}" Width="auto"/>
+				<DataGridTextColumn Header="ApartmentNumber" Binding="{Binding ApartmentNumber}" Width="auto"/>
+				<DataGridTextColumn Header="PostalCode" Binding="{Binding PostalCode}" Width="auto"/>
+				<DataGridTextColumn Header="PhoneNumber" Binding="{Binding PhoneNumber}" Width="auto"/>
+				<DataGridTextColumn Header="BirthDate" Binding="{Binding BirthDate}" Width="auto"/>
+				<DataGridTextColumn Header="Age" Binding="{Binding Age}" Width="auto" IsReadOnly="True" />
+			</DataGrid.Columns>
+		</DataGrid>
 	</Grid>
 </Window>
