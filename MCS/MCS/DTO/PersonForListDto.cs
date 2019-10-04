@@ -11,6 +11,7 @@ namespace MCS.DTO
 	{
 		private bool isNew;
 		private bool isEdited;
+		private bool isDeleted;
 
 		public int Id { get; set; }
 		public string FirstName { get; set; }
@@ -40,6 +41,16 @@ namespace MCS.DTO
 			{
 				isEdited = value;
 				this.RaisePropertyChanged(nameof(this.IsEdited));
+			}
+		}
+
+		public bool IsDeleted
+		{
+			get => isDeleted;
+			set
+			{
+				isDeleted = value;
+				this.RaisePropertyChanged(nameof(this.IsDeleted));
 			}
 		}
 
