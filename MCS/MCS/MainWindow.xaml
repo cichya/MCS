@@ -75,7 +75,9 @@
 				<ColumnDefinition/>
 				<ColumnDefinition/>
 			</Grid.ColumnDefinitions>
-			<Button Command="{Binding AddNewPersonRowCommand}" Content="Add new person" />
+			<Button Grid.Column="0" Command="{Binding AddNewPersonRowCommand}" Content="Add new person" />
+			<Button Grid.Column="1" Command="{Binding RelayCommandSaveChangesCommand}" Content="Save" />
+			<Button Grid.Column="2" Command="{Binding DiscardChangesCommand}" Content="Cancel" />
 		</Grid>
 	</StackPanel>
 </Window>

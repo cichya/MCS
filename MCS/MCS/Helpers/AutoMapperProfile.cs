@@ -20,7 +20,8 @@ namespace MCS.Helpers
 				.ForMember(member => member.Age, memberOpt =>
 				{
 					memberOpt.MapFrom(value => dateTimeService.CalculateAge(value.BirthDate));
-				});
+				})
+				.ReverseMap();
 		}
 	}
 

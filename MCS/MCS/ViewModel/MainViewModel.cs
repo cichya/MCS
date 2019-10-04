@@ -4,6 +4,7 @@ using GalaSoft.MvvmLight.Command;
 using MCS.DTO;
 using MCS.Models;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Controls;
@@ -29,10 +30,14 @@ namespace MCS.ViewModel
 		private RelayCommand addNewPersonRowCommand;
 		private RelayCommand<DataGridCellEditEndingEventArgs> editPersonRowCommand;
 		private RelayCommand<int> deletePersonRowCommand;
+		private RelayCommand saveChangesCommand;
+		private RelayCommand discardChangesCommand;
 
 		private bool addNewPersonRowCommandCanExecute;
 		private bool editPersonRowCommandCanExecute;
 		private bool deletePersonRowCommandCanExecute;
+		private bool saveChangesCommandCanExecute;
+		private bool discardChangesCommandCanExecute;
 
 		public RelayCommand AddNewPersonRowCommand
 		{
@@ -61,6 +66,26 @@ namespace MCS.ViewModel
 				return deletePersonRowCommand ??
 					   (deletePersonRowCommand =
 						   new RelayCommand<int>(param => this.DeletePersonRow(param), this.deletePersonRowCommandCanExecute));
+			}
+		}
+
+		public RelayCommand RelayCommandSaveChangesCommand
+		{
+			get
+			{
+				return saveChangesCommand ??
+					   (saveChangesCommand =
+						   new RelayCommand(this.SaveChanges, this.saveChangesCommandCanExecute));
+			}
+		}
+
+		public RelayCommand DiscardChangesCommand
+		{
+			get
+			{
+				return discardChangesCommand ??
+					   (discardChangesCommand =
+						   new RelayCommand(this.DiscardChanges, this.discardChangesCommandCanExecute));
 			}
 		}
 
@@ -124,11 +149,25 @@ namespace MCS.ViewModel
 			}
 		}
 
+		private void SaveChanges()
+		{
+			IEnumerable<Person> peopleToSave = this.mapper.Map<IEnumerable<Person>>(this.People);
+
+			// save to repository
+		}
+
+		private void DiscardChanges()
+		{
+			// get data from repository
+		}
+
 		private void InitializeCanExecutes()
 		{
 			this.addNewPersonRowCommandCanExecute = true;
 			this.editPersonRowCommandCanExecute = true;
 			this.deletePersonRowCommandCanExecute = true;
+			this.saveChangesCommandCanExecute = true;
+			this.discardChangesCommandCanExecute = true;
 		}
 	}
 }
