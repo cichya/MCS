@@ -18,5 +18,6 @@ namespace MCS.DTO
 		public string PhoneNumber { get; set; }
 		public DateTime BirthDate { get; set; }
 		public string Age { get; set; }
+		public bool IsNew { get; set; }
 	}
 }

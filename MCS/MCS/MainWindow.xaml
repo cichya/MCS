@@ -7,8 +7,28 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
 		DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
-	<Grid>
-		<DataGrid ItemsSource="{Binding People}" MinHeight="255" AutoGenerateColumns="False">
+	<Window.Resources>
+		<ResourceDictionary>
+			<Style x:Key="NewPersonDataGridRow" TargetType="{x:Type DataGridRow}">
+				<Setter Property="BorderBrush" Value="Green" />
+				<Setter Property="BorderThickness" Value="1" />
+			</Style>
+		</ResourceDictionary>
+	</Window.Resources>
+
+	<StackPanel>
+		<DataGrid ItemsSource="{Binding People}" MinHeight="255" AutoGenerateColumns="False" CanUserAddRows="False">
+			<DataGrid.RowStyle>
+				<Style TargetType="{x:Type DataGridRow}">
+					<Style.Triggers>
+						<DataTrigger Binding="{Binding IsNew}"
+                                 Value="True">
+							<Setter Property="BorderBrush" Value="Green" />
+							<Setter Property="BorderThickness" Value="1" />
+						</DataTrigger>
+					</Style.Triggers>
+				</Style>
+			</DataGrid.RowStyle>
 			<DataGrid.Columns>
 				<DataGridTextColumn Header="Lp." Binding="{Binding Id}" Width="auto"/>
 				<DataGridTextColumn Header="FirstName" Binding="{Binding FirstName}" Width="auto"/>
@@ -22,5 +42,13 @@
 				<DataGridTextColumn Header="Age" Binding="{Binding Age}" Width="auto" IsReadOnly="True" />
 			</DataGrid.Columns>
 		</DataGrid>
-	</Grid>
+		<Grid>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition/>
+				<ColumnDefinition/>
+				<ColumnDefinition/>
+			</Grid.ColumnDefinitions>
+			<Button Command="{Binding AddNewPersonRowCommand}" Content="Add new person" />
+		</Grid>
+	</StackPanel>
 </Window>
