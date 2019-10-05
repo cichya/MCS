@@ -22,36 +22,37 @@
 		</ResourceDictionary>
 	</Window.Resources>
 
-	<StackPanel>
-		<DataGrid x:Name="PeopleDataGrid" ItemsSource="{Binding People}" MinHeight="255" AutoGenerateColumns="False" CanUserAddRows="False" >
-			<i:Interaction.Triggers>
-				<i:EventTrigger EventName="CellEditEnding">
-					<cmd:EventToCommand PassEventArgsToCommand="True" Command="{Binding EditPersonRowCommand}"/>
-				</i:EventTrigger>
-			</i:Interaction.Triggers>
-			<DataGrid.RowStyle>
-				<Style TargetType="{x:Type DataGridRow}">
-					<Style.Triggers>
-						<DataTrigger Binding="{Binding IsNew}"
+	<ScrollViewer>
+		<StackPanel Margin="10,10,10,10">
+			<DataGrid x:Name="PeopleDataGrid" ItemsSource="{Binding People}" MinHeight="255" AutoGenerateColumns="False" CanUserAddRows="False" >
+				<i:Interaction.Triggers>
+					<i:EventTrigger EventName="CellEditEnding">
+						<cmd:EventToCommand PassEventArgsToCommand="True" Command="{Binding EditPersonRowCommand}"/>
+					</i:EventTrigger>
+				</i:Interaction.Triggers>
+				<DataGrid.RowStyle>
+					<Style TargetType="{x:Type DataGridRow}">
+						<Style.Triggers>
+							<DataTrigger Binding="{Binding IsNew}"
                                  Value="True">
-							<Setter Property="BorderBrush" Value="Green" />
-							<Setter Property="BorderThickness" Value="1" />
-						</DataTrigger>
-						<DataTrigger Binding="{Binding IsEdited}"
+								<Setter Property="BorderBrush" Value="Green" />
+								<Setter Property="BorderThickness" Value="1" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding IsEdited}"
                                  Value="True">
-							<Setter Property="BorderBrush" Value="Blue" />
-							<Setter Property="BorderThickness" Value="1" />
-						</DataTrigger>
-						<DataTrigger Binding="{Binding IsDeleted}"
+								<Setter Property="BorderBrush" Value="Blue" />
+								<Setter Property="BorderThickness" Value="1" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding IsDeleted}"
                                  Value="True">
-							<Setter Property="BorderBrush" Value="Red" />
-							<Setter Property="BorderThickness" Value="1" />
-						</DataTrigger>
-						<!--<Trigger Property="Validation.HasError" Value="true">
+								<Setter Property="BorderBrush" Value="Red" />
+								<Setter Property="BorderThickness" Value="1" />
+							</DataTrigger>
+							<!--<Trigger Property="Validation.HasError" Value="true">
 							<Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self},Path=(Validation.Errors)[0].ErrorContent}"/>
 						</Trigger>-->
-					</Style.Triggers>
-					<!--<Setter Property="ValidationErrorTemplate">
+						</Style.Triggers>
+						<!--<Setter Property="ValidationErrorTemplate">
 						<Setter.Value>
 							<ControlTemplate>
 								<Image Source="{StaticResource ErrorImageResource}"
@@ -61,90 +62,91 @@
 							</ControlTemplate>
 						</Setter.Value>
 					</Setter>-->
-				</Style>
-			</DataGrid.RowStyle>
-			<DataGrid.RowValidationErrorTemplate>
-				<ControlTemplate>
-					<TextBlock Text=""></TextBlock>
-				</ControlTemplate>
-			</DataGrid.RowValidationErrorTemplate>
-			<DataGrid.Columns>
-				<DataGridTextColumn Header="Lp." Binding="{Binding Id}" Width="auto" IsReadOnly="True"/>
-				<DataGridTextColumn Header="FirstName" Binding="{Binding FirstName, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="auto">
-					<DataGridTextColumn.ElementStyle>
-						<Style TargetType="{x:Type TextBlock}">
-							<Setter Property="DataGridCell.ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
-						</Style>
-					</DataGridTextColumn.ElementStyle>
-				</DataGridTextColumn>
-				<DataGridTextColumn Header="LastName" Binding="{Binding LastName, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="auto">
-					<DataGridTextColumn.ElementStyle>
-						<Style TargetType="{x:Type TextBlock}">
-							<Setter Property="DataGridCell.ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
-						</Style>
-					</DataGridTextColumn.ElementStyle>
-				</DataGridTextColumn>
-				<DataGridTextColumn Header="StreetName" Binding="{Binding StreetName, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="auto">
-					<DataGridTextColumn.ElementStyle>
-						<Style TargetType="{x:Type TextBlock}">
-							<Setter Property="DataGridCell.ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
-						</Style>
-					</DataGridTextColumn.ElementStyle>
-				</DataGridTextColumn>
-				<DataGridTextColumn Header="HouseNumber" Binding="{Binding HouseNumber, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="auto">
-					<DataGridTextColumn.ElementStyle>
-						<Style TargetType="{x:Type TextBlock}">
-							<Setter Property="DataGridCell.ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
-						</Style>
-					</DataGridTextColumn.ElementStyle>
-				</DataGridTextColumn>
-				<DataGridTextColumn Header="ApartmentNumber" Binding="{Binding ApartmentNumber}" Width="auto"/>
-				<DataGridTextColumn Header="PostalCode" Binding="{Binding PostalCode, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="auto">
-					<DataGridTextColumn.ElementStyle>
-						<Style TargetType="{x:Type TextBlock}">
-							<Setter Property="DataGridCell.ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
-						</Style>
-					</DataGridTextColumn.ElementStyle>
-				</DataGridTextColumn>
-				<DataGridTextColumn Header="PhoneNumber" Binding="{Binding PhoneNumber, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="auto">
-					<DataGridTextColumn.ElementStyle>
-						<Style TargetType="{x:Type TextBlock}">
-							<Setter Property="DataGridCell.ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
-						</Style>
-					</DataGridTextColumn.ElementStyle>
-				</DataGridTextColumn>
-				<DataGridTemplateColumn Header="BirthDate">
-					<DataGridTemplateColumn.CellTemplate>
-						<DataTemplate>
-							<TextBlock Text="{Binding BirthDate, StringFormat=dd-MM-yyyy, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" />
-						</DataTemplate>
-					</DataGridTemplateColumn.CellTemplate>
-					<DataGridTemplateColumn.CellEditingTemplate>
-						<DataTemplate>
-							<DatePicker SelectedDate="{Binding BirthDate, StringFormat=dd-MM-yyyy}" />
-						</DataTemplate>
-					</DataGridTemplateColumn.CellEditingTemplate>
-				</DataGridTemplateColumn>
-				<DataGridTextColumn Header="Age" Binding="{Binding Age}" Width="auto" IsReadOnly="True" />
-				<DataGridTemplateColumn>
-					<DataGridTemplateColumn.CellTemplate>
-						<DataTemplate>
-							<Button Content="{Binding IsDeleted, Converter={StaticResource BoolToDeleteButtonContentConverter}}" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext.DeletePersonRowCommand}" CommandParameter="{Binding Id}" />
-						</DataTemplate>
-					</DataGridTemplateColumn.CellTemplate>
-				</DataGridTemplateColumn>
-			</DataGrid.Columns>
-		</DataGrid>
-		<Grid>
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition/>
-				<ColumnDefinition/>
-				<ColumnDefinition/>
-			</Grid.ColumnDefinitions>
-			<Button Grid.Column="0" Command="{Binding AddNewPersonRowCommand}" Content="Add new person" />
-			<Button Grid.Column="1" Command="{Binding SaveChangesCommand}" Content="Save" IsEnabled="{Binding IsValid}" />
-			<Button Grid.Column="2" Command="{Binding DiscardChangesCommand}" Content="Cancel" IsEnabled="{Binding DiscardChangesButtonIsEnabled}" />
-		</Grid>
+					</Style>
+				</DataGrid.RowStyle>
+				<DataGrid.RowValidationErrorTemplate>
+					<ControlTemplate>
+						<TextBlock Text=""></TextBlock>
+					</ControlTemplate>
+				</DataGrid.RowValidationErrorTemplate>
+				<DataGrid.Columns>
+					<DataGridTextColumn Header="Lp." Binding="{Binding Id}" Width="auto" IsReadOnly="True"/>
+					<DataGridTextColumn Header="FirstName" Binding="{Binding FirstName, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="*">
+						<DataGridTextColumn.ElementStyle>
+							<Style TargetType="{x:Type TextBlock}">
+								<Setter Property="DataGridCell.ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+							</Style>
+						</DataGridTextColumn.ElementStyle>
+					</DataGridTextColumn>
+					<DataGridTextColumn Header="LastName" Binding="{Binding LastName, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="*">
+						<DataGridTextColumn.ElementStyle>
+							<Style TargetType="{x:Type TextBlock}">
+								<Setter Property="DataGridCell.ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+							</Style>
+						</DataGridTextColumn.ElementStyle>
+					</DataGridTextColumn>
+					<DataGridTextColumn Header="StreetName" Binding="{Binding StreetName, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="*">
+						<DataGridTextColumn.ElementStyle>
+							<Style TargetType="{x:Type TextBlock}">
+								<Setter Property="DataGridCell.ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+							</Style>
+						</DataGridTextColumn.ElementStyle>
+					</DataGridTextColumn>
+					<DataGridTextColumn Header="HouseNumber" Binding="{Binding HouseNumber, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="*">
+						<DataGridTextColumn.ElementStyle>
+							<Style TargetType="{x:Type TextBlock}">
+								<Setter Property="DataGridCell.ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+							</Style>
+						</DataGridTextColumn.ElementStyle>
+					</DataGridTextColumn>
+					<DataGridTextColumn Header="ApartmentNumber" Binding="{Binding ApartmentNumber}" Width="auto"/>
+					<DataGridTextColumn Header="PostalCode" Binding="{Binding PostalCode, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="*">
+						<DataGridTextColumn.ElementStyle>
+							<Style TargetType="{x:Type TextBlock}">
+								<Setter Property="DataGridCell.ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+							</Style>
+						</DataGridTextColumn.ElementStyle>
+					</DataGridTextColumn>
+					<DataGridTextColumn Header="PhoneNumber" Binding="{Binding PhoneNumber, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="*">
+						<DataGridTextColumn.ElementStyle>
+							<Style TargetType="{x:Type TextBlock}">
+								<Setter Property="DataGridCell.ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+							</Style>
+						</DataGridTextColumn.ElementStyle>
+					</DataGridTextColumn>
+					<DataGridTemplateColumn Header="BirthDate" Width="*">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
+								<TextBlock Text="{Binding BirthDate, StringFormat=dd-MM-yyyy, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" />
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+						<DataGridTemplateColumn.CellEditingTemplate>
+							<DataTemplate>
+								<DatePicker SelectedDate="{Binding BirthDate, StringFormat=dd-MM-yyyy}" />
+							</DataTemplate>
+						</DataGridTemplateColumn.CellEditingTemplate>
+					</DataGridTemplateColumn>
+					<DataGridTextColumn Header="Age" Binding="{Binding Age}" IsReadOnly="True" Width="*" />
+					<DataGridTemplateColumn>
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
+								<Button Content="{Binding IsDeleted, Converter={StaticResource BoolToDeleteButtonContentConverter}}" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext.DeletePersonRowCommand}" CommandParameter="{Binding Id}" />
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
+				</DataGrid.Columns>
+			</DataGrid>
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition/>
+					<ColumnDefinition/>
+					<ColumnDefinition/>
+				</Grid.ColumnDefinitions>
+				<Button Grid.Column="0" Command="{Binding AddNewPersonRowCommand}" Content="Add new person" />
+				<Button Grid.Column="1" Command="{Binding SaveChangesCommand}" Content="Save" IsEnabled="{Binding IsValid}" />
+				<Button Grid.Column="2" Command="{Binding DiscardChangesCommand}" Content="Cancel" IsEnabled="{Binding DiscardChangesButtonIsEnabled}" />
+			</Grid>
 
-	</StackPanel>
+		</StackPanel>
+	</ScrollViewer>
 </Window>
