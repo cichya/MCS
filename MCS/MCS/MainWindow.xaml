@@ -7,8 +7,9 @@
 		xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
 		xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Platform"
 		xmlns:converters="clr-namespace:MCS.Converters"
+		xmlns:l="clr-namespace:MCS.Languages"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
+        Title="{x:Static l:Lang.MainWindowTitleLabel}" Height="450" Width="800"
 		DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
 	<Window.Resources>
 		<ResourceDictionary>
@@ -67,51 +68,51 @@
 					</ControlTemplate>
 				</DataGrid.RowValidationErrorTemplate>
 				<DataGrid.Columns>
-					<DataGridTextColumn Header="Lp." Binding="{Binding Id}" Width="auto" IsReadOnly="True"/>
-					<DataGridTextColumn Header="FirstName" Binding="{Binding FirstName, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="*">
+					<DataGridTextColumn Binding="{Binding Id}" Width="auto" IsReadOnly="True"/>
+					<DataGridTextColumn Header="{x:Static l:Lang.FirstNameHeaderDataGridLabel}" Binding="{Binding FirstName, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="*">
 						<DataGridTextColumn.ElementStyle>
 							<Style TargetType="{x:Type TextBlock}">
 								<Setter Property="DataGridCell.ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
 							</Style>
 						</DataGridTextColumn.ElementStyle>
 					</DataGridTextColumn>
-					<DataGridTextColumn Header="LastName" Binding="{Binding LastName, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="*">
+					<DataGridTextColumn Header="{x:Static l:Lang.LastNameHeaderDataGridLabel}" Binding="{Binding LastName, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="*">
 						<DataGridTextColumn.ElementStyle>
 							<Style TargetType="{x:Type TextBlock}">
 								<Setter Property="DataGridCell.ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
 							</Style>
 						</DataGridTextColumn.ElementStyle>
 					</DataGridTextColumn>
-					<DataGridTextColumn Header="StreetName" Binding="{Binding StreetName, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="*">
+					<DataGridTextColumn Header="{x:Static l:Lang.StreetNameHeaderDataGridLabel}" Binding="{Binding StreetName, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="*">
 						<DataGridTextColumn.ElementStyle>
 							<Style TargetType="{x:Type TextBlock}">
 								<Setter Property="DataGridCell.ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
 							</Style>
 						</DataGridTextColumn.ElementStyle>
 					</DataGridTextColumn>
-					<DataGridTextColumn Header="HouseNumber" Binding="{Binding HouseNumber, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="*">
+					<DataGridTextColumn Header="{x:Static l:Lang.HouseNumberHeaderDataGridLabel}" Binding="{Binding HouseNumber, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="*">
 						<DataGridTextColumn.ElementStyle>
 							<Style TargetType="{x:Type TextBlock}">
 								<Setter Property="DataGridCell.ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
 							</Style>
 						</DataGridTextColumn.ElementStyle>
 					</DataGridTextColumn>
-					<DataGridTextColumn Header="ApartmentNumber" Binding="{Binding ApartmentNumber}" Width="auto"/>
-					<DataGridTextColumn Header="PostalCode" Binding="{Binding PostalCode, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="*">
+					<DataGridTextColumn Header="{x:Static l:Lang.ApartmentNumberHeaderDataGridLabel}" Binding="{Binding ApartmentNumber}" Width="auto"/>
+					<DataGridTextColumn Header="{x:Static l:Lang.PostalCodeHeaderDataGridLabel}" Binding="{Binding PostalCode, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="*">
 						<DataGridTextColumn.ElementStyle>
 							<Style TargetType="{x:Type TextBlock}">
 								<Setter Property="DataGridCell.ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
 							</Style>
 						</DataGridTextColumn.ElementStyle>
 					</DataGridTextColumn>
-					<DataGridTextColumn Header="PhoneNumber" Binding="{Binding PhoneNumber, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="*">
+					<DataGridTextColumn Header="{x:Static l:Lang.PhoneNumberHeaderDataGridLabel}" Binding="{Binding PhoneNumber, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="*">
 						<DataGridTextColumn.ElementStyle>
 							<Style TargetType="{x:Type TextBlock}">
 								<Setter Property="DataGridCell.ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
 							</Style>
 						</DataGridTextColumn.ElementStyle>
 					</DataGridTextColumn>
-					<DataGridTemplateColumn Header="BirthDate" Width="*">
+					<DataGridTemplateColumn Header="{x:Static l:Lang.BirthDateHeaderDataGridLabel}" Width="*">
 						<DataGridTemplateColumn.CellTemplate>
 							<DataTemplate>
 								<TextBlock Text="{Binding BirthDate, StringFormat=dd-MM-yyyy, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" />
@@ -123,7 +124,7 @@
 							</DataTemplate>
 						</DataGridTemplateColumn.CellEditingTemplate>
 					</DataGridTemplateColumn>
-					<DataGridTextColumn Header="Age" Binding="{Binding Age}" IsReadOnly="True" Width="*" />
+					<DataGridTextColumn Header="{x:Static l:Lang.AgeHeaderDataGridLabel}" Binding="{Binding Age}" IsReadOnly="True" Width="*" />
 					<DataGridTemplateColumn>
 						<DataGridTemplateColumn.CellTemplate>
 							<DataTemplate>
@@ -139,11 +140,10 @@
 					<ColumnDefinition/>
 					<ColumnDefinition/>
 				</Grid.ColumnDefinitions>
-				<Button Grid.Column="0" Margin="0,0,10,0" Command="{Binding AddNewPersonRowCommand}" Content="Add new person" />
-				<Button Grid.Column="1" Margin="10,0,10,0" Command="{Binding SaveChangesCommand}" Content="Save" IsEnabled="{Binding IsValid}" />
-				<Button Grid.Column="2" Margin="10,0,0,0" Command="{Binding DiscardChangesCommand}" Content="Cancel" IsEnabled="{Binding DiscardChangesButtonIsEnabled}" />
+				<Button Grid.Column="0" Margin="0,0,10,0" Command="{Binding AddNewPersonRowCommand}" Content="{x:Static l:Lang.AddNewPersonButtonLabel}" />
+				<Button Grid.Column="1" Margin="10,0,10,0" Command="{Binding SaveChangesCommand}" Content="{x:Static l:Lang.SaveButtonLabel}" IsEnabled="{Binding IsValid}" />
+				<Button Grid.Column="2" Margin="10,0,0,0" Command="{Binding DiscardChangesCommand}" Content="{x:Static l:Lang.Cancel}" IsEnabled="{Binding DiscardChangesButtonIsEnabled}" />
 			</Grid>
-
 		</StackPanel>
 	</ScrollViewer>
 </Window>
