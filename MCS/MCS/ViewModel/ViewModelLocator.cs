@@ -54,6 +54,7 @@ namespace MCS.ViewModel
 			SimpleIoc.Default.Register<IPathProvider, PathProvider>();
 			SimpleIoc.Default.Register<IXmlService, XmlService>();
 			SimpleIoc.Default.Register<IPersonRepository, PersonRepository>();
+			SimpleIoc.Default.Register<IMessageBoxService, MessageBoxService>();
 
             SimpleIoc.Default.Register<MainViewModel>();
         }

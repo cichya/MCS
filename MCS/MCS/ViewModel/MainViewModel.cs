@@ -4,6 +4,7 @@ using GalaSoft.MvvmLight.Command;
 using MCS.DTO;
 using MCS.Models;
 using MCS.Repositories;
+using MCS.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -41,6 +42,7 @@ namespace MCS.ViewModel
 
 		private readonly IMapper mapper;
 		private readonly IPersonRepository personRepository;
+		private readonly IMessageBoxService messageBoxService;
 		private RelayCommand addNewPersonRowCommand;
 		private RelayCommand<DataGridCellEditEndingEventArgs> editPersonRowCommand;
 		private RelayCommand<int> deletePersonRowCommand;
@@ -150,10 +152,11 @@ namespace MCS.ViewModel
 			}
 		}
 
-		public MainViewModel(IMapper mapper, IPersonRepository personRepository)
+		public MainViewModel(IMapper mapper, IPersonRepository personRepository, IMessageBoxService messageBoxService)
 		{
 			this.mapper = mapper;
 			this.personRepository = personRepository;
+			this.messageBoxService = messageBoxService;
 
 			this.InitializeCanExecutes();
 
@@ -180,6 +183,7 @@ namespace MCS.ViewModel
 			catch (Exception ex)
 			{
 				Logger.Error(ex);
+				this.messageBoxService.ShowErrorMsgBox();
 			}
 			finally
 			{

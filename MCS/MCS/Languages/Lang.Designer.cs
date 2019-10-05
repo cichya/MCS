@@ -124,6 +124,15 @@ namespace MCS.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An error occurred. Please check application logs..
+        /// </summary>
+        public static string ErrorMessageBoxContentText {
+            get {
+                return ResourceManager.GetString("ErrorMessageBoxContentText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to First Name.
         /// </summary>
         public static string FirstNameHeaderDataGridLabel {
