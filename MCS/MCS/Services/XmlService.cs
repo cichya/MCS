@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 using MCS.Models;
 
@@ -19,7 +20,11 @@ namespace MCS.Services
 
 		public void CreateXmlFile(string path)
 		{
-			File.Create(path);
+			var xmlFile = new XDocument(new XDeclaration("1.0", "utf-8", "yes"));
+
+			xmlFile.Add(new XElement("ArrayOfPerson"));
+
+			xmlFile.Save(path);
 		}
 
 		public IList<Person> LoadXml(string filePath)
