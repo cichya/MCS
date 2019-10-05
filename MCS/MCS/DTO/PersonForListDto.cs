@@ -17,7 +17,7 @@ namespace MCS.DTO
 		{
 			get
 			{
-				string err = "Data cannot be null";
+				string err = "Data cannot be empty";
 
 				switch (columnName)
 				{
