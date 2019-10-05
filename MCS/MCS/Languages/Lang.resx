@@ -129,6 +129,9 @@
   <data name="BirthDateHeaderDataGridLabel" xml:space="preserve">
     <value>Day of Birth</value>
   </data>
+  <data name="BusyLabel" xml:space="preserve">
+    <value>Please waiting...</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>

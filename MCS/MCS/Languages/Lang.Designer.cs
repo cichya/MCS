@@ -97,6 +97,15 @@ namespace MCS.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please waiting....
+        /// </summary>
+        public static string BusyLabel {
+            get {
+                return ResourceManager.GetString("BusyLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string Cancel {
