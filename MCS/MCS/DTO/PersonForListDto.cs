@@ -12,53 +12,35 @@ namespace MCS.DTO
 		private bool isNew;
 		private bool isEdited;
 		private bool isDeleted;
+		private Dictionary<string, string> errors;
 
 		public string this[string columnName]
 		{
 			get
 			{
-				string err = "Data cannot be empty";
+				
 
 				switch (columnName)
 				{
 					case nameof(this.FirstName):
-						if (String.IsNullOrEmpty(this.FirstName))
-						{
-							this.AddError(nameof(this.FirstName), err);
-							return err;
-						}
-						this.RemoveError(nameof(this.FirstName));
-						return null;
+						return this.ValidColumn(nameof(this.FirstName), this.FirstName);
+					case nameof(this.LastName):
+						return this.ValidColumn(nameof(this.LastName), this.LastName);
+					case nameof(this.StreetName):
+						return this.ValidColumn(nameof(this.StreetName), this.StreetName);
+					case nameof(this.HouseNumber):
+						return this.ValidColumn(nameof(this.HouseNumber), this.HouseNumber);
+					case nameof(this.PostalCode):
+						return this.ValidColumn(nameof(this.PostalCode), this.PostalCode);
+					case nameof(this.PhoneNumber):
+						return this.ValidColumn(nameof(this.PhoneNumber), this.PhoneNumber);
+					case nameof(this.BirthDate):
+						return this.ValidColumn(nameof(this.BirthDate), this.BirthDate.Value.ToString());
 					default:
 						return null;
-						break;
 				}
 			}
 		}
-
-		private Dictionary<string, string> errors { get; set; }
-
-		private void AddError(string paramName, string error)
-		{
-			if (this.errors == null)
-			{
-				this.errors = new Dictionary<string, string>();
-			}
-
-			if (!this.errors.ContainsKey(paramName))
-			{
-				this.errors.Add(paramName, error);
-			}
-		}
-
-		private void RemoveError(string paramName)
-		{
-			if (this.errors != null && this.errors.Count > 0)
-			{
-				this.errors.Remove(paramName);
-			}
-		}
-
 
 		public bool HasError
 		{
@@ -69,7 +51,7 @@ namespace MCS.DTO
 		}
 
 		public int Id { get; set; }
-		//public string FirstName { get; set; }
+		public string FirstName { get; set; }
 		public string LastName { get; set; }
 		public string StreetName { get; set; }
 		public string HouseNumber { get; set; }
@@ -78,17 +60,6 @@ namespace MCS.DTO
 		public string PhoneNumber { get; set; }
 		public DateTime? BirthDate { get; set; }
 		public string Age { get; set; }
-
-		private string firstName;
-		public string FirstName
-		{
-			get => firstName;
-			set
-			{
-				firstName = value;
-				this.RaisePropertyChanged(nameof(this.FirstName));
-			}
-		}
 
 		public bool IsNew
 		{
@@ -127,6 +98,41 @@ namespace MCS.DTO
 		private void RaisePropertyChanged(string propertyName)
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		}
+
+		private void AddError(string paramName, string error)
+		{
+			if (this.errors == null)
+			{
+				this.errors = new Dictionary<string, string>();
+			}
+
+			if (!this.errors.ContainsKey(paramName))
+			{
+				this.errors.Add(paramName, error);
+			}
+		}
+
+		private void RemoveError(string paramName)
+		{
+			if (this.errors != null && this.errors.Count > 0)
+			{
+				this.errors.Remove(paramName);
+			}
+		}
+
+		private string ValidColumn(string paramName, string paramValue)
+		{
+			if (String.IsNullOrEmpty(paramValue))
+			{
+				string err = "Data cannot be empty";
+
+				this.AddError(paramName, err);
+
+				return err;
+			}
+			this.RemoveError(paramName);
+			return null;
 		}
 	}
 }

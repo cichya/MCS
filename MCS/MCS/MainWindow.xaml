@@ -78,13 +78,13 @@
 					</DataGridTextColumn.Binding>
 				</DataGridTextColumn>-->
 
-				<DataGridTextColumn Header="LastName" Binding="{Binding LastName}" Width="auto"/>
-				<DataGridTextColumn Header="StreetName" Binding="{Binding StreetName}" Width="auto"/>
-				<DataGridTextColumn Header="HouseNumber" Binding="{Binding HouseNumber}" Width="auto"/>
+				<DataGridTextColumn Header="LastName" Binding="{Binding LastName, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="auto"/>
+				<DataGridTextColumn Header="StreetName" Binding="{Binding StreetName, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="auto"/>
+				<DataGridTextColumn Header="HouseNumber" Binding="{Binding HouseNumber, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="auto"/>
 				<DataGridTextColumn Header="ApartmentNumber" Binding="{Binding ApartmentNumber}" Width="auto"/>
-				<DataGridTextColumn Header="PostalCode" Binding="{Binding PostalCode}" Width="auto"/>
-				<DataGridTextColumn Header="PhoneNumber" Binding="{Binding PhoneNumber}" Width="auto"/>
-				<DataGridTextColumn Header="BirthDate" Binding="{Binding BirthDate}" Width="auto"/>
+				<DataGridTextColumn Header="PostalCode" Binding="{Binding PostalCode, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="auto"/>
+				<DataGridTextColumn Header="PhoneNumber" Binding="{Binding PhoneNumber, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="auto"/>
+				<DataGridTextColumn Header="BirthDate" Binding="{Binding BirthDate, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="auto"/>
 				<DataGridTextColumn Header="Age" Binding="{Binding Age}" Width="auto" IsReadOnly="True" />
 				<DataGridTemplateColumn>
 					<DataGridTemplateColumn.CellTemplate>
