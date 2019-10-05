@@ -35,7 +35,7 @@ namespace MCS.DTO
 					case nameof(this.PhoneNumber):
 						return this.ValidColumn(nameof(this.PhoneNumber), this.PhoneNumber);
 					case nameof(this.BirthDate):
-						return this.ValidColumn(nameof(this.BirthDate), this.BirthDate.Value.ToString());
+						return this.ValidColumn(nameof(this.BirthDate), this.BirthDate.HasValue ? this.BirthDate.Value.ToString() : null);
 					default:
 						return null;
 				}

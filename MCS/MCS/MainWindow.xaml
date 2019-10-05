@@ -103,7 +103,7 @@
 			</Grid.ColumnDefinitions>
 			<Button Grid.Column="0" Command="{Binding AddNewPersonRowCommand}" Content="Add new person" />
 			<Button Grid.Column="1" Command="{Binding SaveChangesCommand}" Content="Save" IsEnabled="{Binding IsValid}" />
-			<Button Grid.Column="2" Command="{Binding DiscardChangesCommand}" Content="Cancel" />
+			<Button Grid.Column="2" Command="{Binding DiscardChangesCommand}" Content="Cancel" IsEnabled="{Binding DiscardChangesButtonIsEnabled}" />
 		</Grid>
 
 	</StackPanel>
