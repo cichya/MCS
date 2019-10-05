@@ -6,6 +6,8 @@ using MCS.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Controls;
 
@@ -75,7 +77,7 @@ namespace MCS.ViewModel
 			}
 		}
 
-		public RelayCommand RelayCommandSaveChangesCommand
+		public RelayCommand SaveChangesCommand
 		{
 			get
 			{
@@ -97,6 +99,21 @@ namespace MCS.ViewModel
 
 		public ObservableCollection<PersonForListDto> People { get; set; }
 
+		private bool isValid;
+
+		public bool IsValid
+		{
+			get
+			{
+				return this.isValid;
+			}
+			set
+			{
+				this.isValid = value;
+				this.RaisePropertyChanged(nameof(this.IsValid));
+			}
+		}
+
 		public MainViewModel(IMapper mapper)
 		{
 			this.mapper = mapper;
@@ -104,6 +121,8 @@ namespace MCS.ViewModel
 			this.InitializeCanExecutes();
 
 			this.People = new ObservableCollection<PersonForListDto>();
+
+			this.People.CollectionChanged += People_CollectionChanged;
 
 			Person person = new Person
 			{
@@ -157,9 +176,12 @@ namespace MCS.ViewModel
 
 		private void SaveChanges()
 		{
-			IEnumerable<Person> peopleToSave = this.mapper.Map<IEnumerable<Person>>(this.People);
+			if (this.IsValid)
+			{
+				IEnumerable<Person> peopleToSave = this.mapper.Map<IEnumerable<Person>>(this.People);
 
-			// save to repository
+				// save to repository
+			}
 		}
 
 		private void DiscardChanges()
@@ -174,6 +196,25 @@ namespace MCS.ViewModel
 			this.deletePersonRowCommandCanExecute = true;
 			this.saveChangesCommandCanExecute = true;
 			this.discardChangesCommandCanExecute = true;
+		}
+
+		private void People_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		{
+			if (e.OldItems != null)
+			{
+				foreach (INotifyPropertyChanged item in e.OldItems)
+					item.PropertyChanged -= People_Item_PropertyChanged;
+			}
+			if (e.NewItems != null)
+			{
+				foreach (INotifyPropertyChanged item in e.NewItems)
+					item.PropertyChanged += People_Item_PropertyChanged;
+			}
+		}
+
+		private void People_Item_PropertyChanged(object sender, PropertyChangedEventArgs e)
+		{
+			this.IsValid = !this.People.Any(x => x.HasError);
 		}
 	}
 }

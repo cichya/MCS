@@ -47,6 +47,9 @@
 							<Setter Property="BorderBrush" Value="Red" />
 							<Setter Property="BorderThickness" Value="1" />
 						</DataTrigger>
+						<Trigger Property="Validation.HasError" Value="true">
+							<Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self},Path=(Validation.Errors)[0].ErrorContent}"/>
+						</Trigger>
 					</Style.Triggers>
 					<Setter Property="ValidationErrorTemplate">
 						<Setter.Value>
@@ -54,7 +57,7 @@
 								<Image Source="{StaticResource ErrorImageResource}"
 									ToolTip="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGridRow}}, Path=(Validation.Errors)[0].ErrorContent}"
 									Margin="0"
-									Width="11" Height="11" />		
+									Width="11" Height="11" />
 							</ControlTemplate>
 						</Setter.Value>
 					</Setter>
@@ -62,8 +65,10 @@
 			</DataGrid.RowStyle>
 			<DataGrid.Columns>
 				<DataGridTextColumn Header="Lp." Binding="{Binding Id}" Width="auto" IsReadOnly="True"/>
-				
-				<DataGridTextColumn x:Name="FirstNameDataGridTextColumn" Header="FirstName">
+
+				<DataGridTextColumn Header="FirstName" Binding="{Binding FirstName, ValidatesOnDataErrors=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="auto"/>
+
+				<!--<DataGridTextColumn x:Name="FirstNameDataGridTextColumn" Header="FirstName">
 					<DataGridTextColumn.Binding>
 						<Binding Path="FirstName">
 							<Binding.ValidationRules>
@@ -71,7 +76,7 @@
 							</Binding.ValidationRules>
 						</Binding>
 					</DataGridTextColumn.Binding>
-				</DataGridTextColumn>
+				</DataGridTextColumn>-->
 
 				<DataGridTextColumn Header="LastName" Binding="{Binding LastName}" Width="auto"/>
 				<DataGridTextColumn Header="StreetName" Binding="{Binding StreetName}" Width="auto"/>
@@ -97,7 +102,7 @@
 				<ColumnDefinition/>
 			</Grid.ColumnDefinitions>
 			<Button Grid.Column="0" Command="{Binding AddNewPersonRowCommand}" Content="Add new person" />
-			<Button Grid.Column="1" Command="{Binding RelayCommandSaveChangesCommand}" Content="Save" />
+			<Button Grid.Column="1" Command="{Binding SaveChangesCommand}" Content="Save" IsEnabled="{Binding IsValid}" />
 			<Button Grid.Column="2" Command="{Binding DiscardChangesCommand}" Content="Cancel" />
 		</Grid>
 
