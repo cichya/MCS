@@ -18,8 +18,6 @@ namespace MCS.DTO
 		{
 			get
 			{
-				
-
 				switch (columnName)
 				{
 					case nameof(this.FirstName):
@@ -73,7 +71,10 @@ namespace MCS.DTO
 		
 		public bool IsEdited
 		{
-			get => isEdited;
+			get
+			{
+				return this.IsNew ? false : this.isEdited;
+			}
 			set
 			{
 				isEdited = value;
