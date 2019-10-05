@@ -48,6 +48,7 @@ namespace MCS.DTO
 			}
 		}
 
+		public int On { get; set; }
 		public int Id { get; set; }
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
@@ -92,7 +93,7 @@ namespace MCS.DTO
 			}
 		}
 
-		public string Error => throw new NotImplementedException();
+		public string Error => null;
 
 		public event PropertyChangedEventHandler PropertyChanged;
 

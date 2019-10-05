@@ -160,12 +160,11 @@ namespace MCS.ViewModel
 
 		private void AddNewPersonRow()
 		{
-			int id = this.People.Count > 0 ? this.People.Max(x => x.Id) + 1 : 1;
+			int id = this.People.Count > 0 ? this.People.Last().On + 1 : 1;
 
 			this.People.Add(new PersonForListDto
 			{
-				Id = id,
-				Age = "0",
+				On = id,
 				IsNew = true
 			});
 
@@ -209,9 +208,13 @@ namespace MCS.ViewModel
 
 				this.People.Clear();
 
-				foreach (var item in peopleForListDto)
+				for (int i = 0; i < peopleForListDto.Count(); i++)
 				{
-					this.People.Add(item);
+					PersonForListDto dto = peopleForListDto.ElementAt(i);
+
+					dto.On = i + 1;
+
+					this.People.Add(dto);
 				}
 
 				this.DiscardChangesButtonIsEnabled = false;
@@ -276,8 +279,12 @@ namespace MCS.ViewModel
 
 			IEnumerable<PersonForListDto> peopleForListDto = this.mapper.Map<IEnumerable<PersonForListDto>>(peopleFromDb);
 
-			foreach (var dto in peopleForListDto)
+			for (int i = 0; i < peopleForListDto.Count(); i++)
 			{
+				PersonForListDto dto = peopleForListDto.ElementAt(i);
+
+				dto.On = i + 1;
+
 				this.People.Add(dto);
 			}
 		}

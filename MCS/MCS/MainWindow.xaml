@@ -71,7 +71,7 @@
 							</ControlTemplate>
 						</DataGrid.RowValidationErrorTemplate>
 						<DataGrid.Columns>
-							<DataGridTextColumn Binding="{Binding Id}" Width="auto" IsReadOnly="True"/>
+							<DataGridTextColumn Binding="{Binding On}" Width="auto" IsReadOnly="True"/>
 							<DataGridTextColumn Header="{x:Static l:Lang.FirstNameHeaderDataGridLabel}" Binding="{Binding FirstName, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="*">
 								<DataGridTextColumn.ElementStyle>
 									<Style TargetType="{x:Type TextBlock}">
