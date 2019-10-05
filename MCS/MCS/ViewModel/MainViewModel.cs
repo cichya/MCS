@@ -102,6 +102,21 @@ namespace MCS.ViewModel
 
 		public ObservableCollection<PersonForListDto> People { get; set; }
 
+		private bool isBusy;
+
+		public bool IsBusy
+		{
+			get
+			{
+				return this.isBusy;
+			}
+			set
+			{
+				this.isBusy = value;
+				this.RaisePropertyChanged(nameof(this.IsBusy));
+			}
+		}
+
 		private bool isValid;
 
 		public bool IsValid

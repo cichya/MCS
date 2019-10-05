@@ -126,7 +126,7 @@ namespace MCS.DTO
 		{
 			if (String.IsNullOrEmpty(paramValue))
 			{
-				string err = "Data cannot be empty";
+				string err = Languages.Lang.NoDataErrorText;
 
 				this.AddError(paramName, err);
 
