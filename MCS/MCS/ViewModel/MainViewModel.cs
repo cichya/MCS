@@ -160,6 +160,8 @@ namespace MCS.ViewModel
 
 		private void AddNewPersonRow()
 		{
+			this.IsBusy = true;
+
 			int id = this.People.Count > 0 ? this.People.Last().On + 1 : 1;
 
 			this.People.Add(new PersonForListDto
@@ -170,15 +172,23 @@ namespace MCS.ViewModel
 
 			this.IsValid = false;
 			this.DiscardChangesButtonIsEnabled = true;
+
+			this.IsBusy = false;
 		}
 
 		private void EditPersonRow(PersonForListDto editedPerson)
 		{
+			this.IsBusy = true;
+
 			editedPerson.IsEdited = true;
+
+			this.IsBusy = false;
 		}
 
 		private void DeletePersonRow(int id)
 		{
+			this.IsBusy = true;
+
 			PersonForListDto person = this.People.FirstOrDefault(x => x.Id == id);
 			
 			if (person != null)
@@ -192,10 +202,14 @@ namespace MCS.ViewModel
 					person.IsDeleted = !person.IsDeleted;
 				}
 			}
+
+			this.IsBusy = false;
 		}
 
 		private void SaveChanges()
 		{
+			this.IsBusy = true;
+
 			if (this.IsValid)
 			{
 				var peopleWithoutDeleted = this.People.Where(x => !x.IsDeleted).ToList();
@@ -220,14 +234,20 @@ namespace MCS.ViewModel
 				this.DiscardChangesButtonIsEnabled = false;
 				this.IsValid = false;
 			}
+
+			this.IsBusy = false; ;
 		}
 
 		private void DiscardChanges()
 		{
+			this.IsBusy = true;
+
 			this.Refresh();
 
 			this.DiscardChangesButtonIsEnabled = false;
 			this.IsValid = false;
+
+			this.IsBusy = false;
 		}
 
 		private void InitializeCanExecutes()
