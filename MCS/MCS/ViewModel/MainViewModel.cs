@@ -160,94 +160,143 @@ namespace MCS.ViewModel
 
 		private void AddNewPersonRow()
 		{
-			this.IsBusy = true;
-
-			int id = this.People.Count > 0 ? this.People.Last().On + 1 : 1;
-
-			this.People.Add(new PersonForListDto
+			try
 			{
-				On = id,
-				IsNew = true
-			});
+				this.IsBusy = true;
 
-			this.IsValid = false;
-			this.DiscardChangesButtonIsEnabled = true;
+				int id = this.People.Count > 0 ? this.People.Last().On + 1 : 1;
 
-			this.IsBusy = false;
+				this.People.Add(new PersonForListDto
+				{
+					On = id,
+					IsNew = true
+				});
+
+				this.IsValid = false;
+				this.DiscardChangesButtonIsEnabled = true;
+			}
+			catch (Exception ex)
+			{
+
+		
+			}
+			finally
+			{
+				this.IsBusy = false;
+			}
 		}
 
 		private void EditPersonRow(PersonForListDto editedPerson)
 		{
-			this.IsBusy = true;
+			try
+			{
+				this.IsBusy = true;
 
-			editedPerson.IsEdited = true;
+				editedPerson.IsEdited = true;
+			}
+			catch (Exception ex)
+			{
+				this.IsBusy = false;
 
-			this.IsBusy = false;
+			}
+			finally
+			{
+
+			}	
 		}
 
 		private void DeletePersonRow(int id)
 		{
-			this.IsBusy = true;
-
-			PersonForListDto person = this.People.FirstOrDefault(x => x.Id == id);
-			
-			if (person != null)
+			try
 			{
-				if (person.IsNew)
+				this.IsBusy = true;
+
+				PersonForListDto person = this.People.FirstOrDefault(x => x.Id == id);
+
+				if (person != null)
 				{
-					this.People.Remove(person);
-				}
-				else
-				{
-					person.IsDeleted = !person.IsDeleted;
+					if (person.IsNew)
+					{
+						this.People.Remove(person);
+					}
+					else
+					{
+						person.IsDeleted = !person.IsDeleted;
+					}
 				}
 			}
+			catch (Exception ex)
+			{
 
-			this.IsBusy = false;
+				
+			}
+			finally
+			{
+				this.IsBusy = false;
+			}
 		}
 
 		private void SaveChanges()
 		{
-			this.IsBusy = true;
-
-			if (this.IsValid)
+			try
 			{
-				var peopleWithoutDeleted = this.People.Where(x => !x.IsDeleted).ToList();
+				this.IsBusy = true;
 
-				var filteredPeople = this.mapper.Map<IList<Person>>(peopleWithoutDeleted);
-
-				this.personRepository.Save(filteredPeople);
-
-				IEnumerable<PersonForListDto> peopleForListDto = this.mapper.Map<IEnumerable<PersonForListDto>>(filteredPeople);
-
-				this.People.Clear();
-
-				for (int i = 0; i < peopleForListDto.Count(); i++)
+				if (this.IsValid)
 				{
-					PersonForListDto dto = peopleForListDto.ElementAt(i);
+					var peopleWithoutDeleted = this.People.Where(x => !x.IsDeleted).ToList();
 
-					dto.On = i + 1;
+					var filteredPeople = this.mapper.Map<IList<Person>>(peopleWithoutDeleted);
 
-					this.People.Add(dto);
+					this.personRepository.Save(filteredPeople);
+
+					IEnumerable<PersonForListDto> peopleForListDto = this.mapper.Map<IEnumerable<PersonForListDto>>(filteredPeople);
+
+					this.People.Clear();
+
+					for (int i = 0; i < peopleForListDto.Count(); i++)
+					{
+						PersonForListDto dto = peopleForListDto.ElementAt(i);
+
+						dto.On = i + 1;
+
+						this.People.Add(dto);
+					}
+
+					this.DiscardChangesButtonIsEnabled = false;
+					this.IsValid = false;
 				}
-
-				this.DiscardChangesButtonIsEnabled = false;
-				this.IsValid = false;
 			}
+			catch (Exception ex)
+			{
 
-			this.IsBusy = false; ;
+			}
+			finally
+			{
+				this.IsBusy = false;
+			}		
 		}
 
 		private void DiscardChanges()
 		{
-			this.IsBusy = true;
+			try
+			{
+				this.IsBusy = true;
 
-			this.Refresh();
+				this.Refresh();
 
-			this.DiscardChangesButtonIsEnabled = false;
-			this.IsValid = false;
+				this.DiscardChangesButtonIsEnabled = false;
+				this.IsValid = false;
+			}
+			catch (Exception ex)
+			{
 
-			this.IsBusy = false;
+				
+			}
+			finally
+			{
+				this.IsBusy = false;
+			}
 		}
 
 		private void InitializeCanExecutes()
