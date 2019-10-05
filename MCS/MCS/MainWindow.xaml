@@ -35,18 +35,15 @@
 						<Style.Triggers>
 							<DataTrigger Binding="{Binding IsNew}"
                                  Value="True">
-								<Setter Property="BorderBrush" Value="Green" />
-								<Setter Property="BorderThickness" Value="1" />
+								<Setter Property="Background" Value="Green" />
 							</DataTrigger>
 							<DataTrigger Binding="{Binding IsEdited}"
                                  Value="True">
-								<Setter Property="BorderBrush" Value="Blue" />
-								<Setter Property="BorderThickness" Value="1" />
+								<Setter Property="Background" Value="Blue" />
 							</DataTrigger>
 							<DataTrigger Binding="{Binding IsDeleted}"
                                  Value="True">
-								<Setter Property="BorderBrush" Value="Red" />
-								<Setter Property="BorderThickness" Value="1" />
+								<Setter Property="Background" Value="Red" />
 							</DataTrigger>
 							<!--<Trigger Property="Validation.HasError" Value="true">
 							<Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self},Path=(Validation.Errors)[0].ErrorContent}"/>
