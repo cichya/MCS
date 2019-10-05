@@ -124,6 +124,15 @@ namespace MCS.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string ErrorLabel {
+            get {
+                return ResourceManager.GetString("ErrorLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An error occurred. Please check application logs..
         /// </summary>
         public static string ErrorMessageBoxContentText {

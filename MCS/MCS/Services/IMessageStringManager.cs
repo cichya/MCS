@@ -9,5 +9,6 @@ namespace MCS.Services
 	public interface IMessageStringManager
 	{
 		string CannotFindCurrentUserProfilePathExceptionMessage { get; }
+		string ErrorMessageBoxContentMessage { get; }
 	}
 }

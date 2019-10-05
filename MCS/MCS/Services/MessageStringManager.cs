@@ -9,5 +9,7 @@ namespace MCS.Services
 	public class MessageStringManager : IMessageStringManager
 	{
 		public string CannotFindCurrentUserProfilePathExceptionMessage => Languages.Lang.CannotFindCurrentUserProfilePathExceptionMessage;
+
+		public string ErrorMessageBoxContentMessage => Languages.Lang.ErrorMessageBoxContentText;
 	}
 }

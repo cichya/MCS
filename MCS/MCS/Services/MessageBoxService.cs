@@ -11,7 +11,7 @@ namespace MCS.Services
 	{
 		public void ShowErrorMsgBox(string message)
 		{
-			MessageBox.Show(message, Languages.Lang.ErrorMessageBoxContentText, MessageBoxButton.OK, MessageBoxImage.Error);
+			MessageBox.Show(message, Languages.Lang.ErrorLabel, MessageBoxButton.OK, MessageBoxImage.Error);
 		}
 	}
 }

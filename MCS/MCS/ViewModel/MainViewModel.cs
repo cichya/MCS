@@ -43,6 +43,7 @@ namespace MCS.ViewModel
 		private readonly IMapper mapper;
 		private readonly IPersonRepository personRepository;
 		private readonly IMessageBoxService messageBoxService;
+		private readonly IMessageStringManager messageStringManager;
 		private RelayCommand addNewPersonRowCommand;
 		private RelayCommand<DataGridCellEditEndingEventArgs> editPersonRowCommand;
 		private RelayCommand<int> deletePersonRowCommand;
@@ -152,11 +153,12 @@ namespace MCS.ViewModel
 			}
 		}
 
-		public MainViewModel(IMapper mapper, IPersonRepository personRepository, IMessageBoxService messageBoxService)
+		public MainViewModel(IMapper mapper, IPersonRepository personRepository, IMessageBoxService messageBoxService, IMessageStringManager messageStringManager)
 		{
 			this.mapper = mapper;
 			this.personRepository = personRepository;
 			this.messageBoxService = messageBoxService;
+			this.messageStringManager = messageStringManager;
 
 			this.InitializeCanExecutes();
 
@@ -183,7 +185,7 @@ namespace MCS.ViewModel
 			catch (Exception ex)
 			{
 				Logger.Error(ex);
-				this.messageBoxService.ShowErrorMsgBox();
+				this.messageBoxService.ShowErrorMsgBox(this.messageStringManager.ErrorMessageBoxContentMessage);
 			}
 			finally
 			{
@@ -202,6 +204,7 @@ namespace MCS.ViewModel
 			catch (Exception ex)
 			{
 				Logger.Error(ex);
+				this.messageBoxService.ShowErrorMsgBox(this.messageStringManager.ErrorMessageBoxContentMessage);
 			}
 			finally
 			{
@@ -232,6 +235,7 @@ namespace MCS.ViewModel
 			catch (Exception ex)
 			{
 				Logger.Error(ex);
+				this.messageBoxService.ShowErrorMsgBox(this.messageStringManager.ErrorMessageBoxContentMessage);
 			}
 			finally
 			{
@@ -273,6 +277,7 @@ namespace MCS.ViewModel
 			catch (Exception ex)
 			{
 				Logger.Error(ex);
+				this.messageBoxService.ShowErrorMsgBox(this.messageStringManager.ErrorMessageBoxContentMessage);
 			}
 			finally
 			{
@@ -294,6 +299,7 @@ namespace MCS.ViewModel
 			catch (Exception ex)
 			{
 				Logger.Error(ex);
+				this.messageBoxService.ShowErrorMsgBox(this.messageStringManager.ErrorMessageBoxContentMessage);
 			}
 			finally
 			{

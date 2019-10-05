@@ -138,6 +138,9 @@
   <data name="CannotFindCurrentUserProfilePathExceptionMessage" xml:space="preserve">
     <value>Cannot find current user profile path</value>
   </data>
+  <data name="ErrorLabel" xml:space="preserve">
+    <value>Error</value>
+  </data>
   <data name="ErrorMessageBoxContentText" xml:space="preserve">
     <value>An error occurred. Please check application logs.</value>
   </data>
