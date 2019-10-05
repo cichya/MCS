@@ -123,7 +123,7 @@
 								</DataGridTemplateColumn.CellTemplate>
 								<DataGridTemplateColumn.CellEditingTemplate>
 									<DataTemplate>
-										<DatePicker SelectedDate="{Binding BirthDate, StringFormat=dd-MM-yyyy}" />
+										<DatePicker SelectedDate="{Binding BirthDate, StringFormat=dd-MM-yyyy, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" />
 									</DataTemplate>
 								</DataGridTemplateColumn.CellEditingTemplate>
 							</DataGridTemplateColumn>

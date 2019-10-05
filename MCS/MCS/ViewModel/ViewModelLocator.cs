@@ -16,6 +16,8 @@ using AutoMapper;
 using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
 using MCS.Helpers;
+using MCS.Repositories;
+using MCS.Services;
 
 namespace MCS.ViewModel
 {
@@ -47,6 +49,11 @@ namespace MCS.ViewModel
 			var mapper = config.CreateMapper();
 
 			SimpleIoc.Default.Register<IMapper>(() => mapper);
+			
+			SimpleIoc.Default.Register<IMessageStringManager, MessageStringManager>();
+			SimpleIoc.Default.Register<IPathProvider, PathProvider>();
+			SimpleIoc.Default.Register<IXmlService, XmlService>();
+			SimpleIoc.Default.Register<IPersonRepository, PersonRepository>();
 
             SimpleIoc.Default.Register<MainViewModel>();
         }

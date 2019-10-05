@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using MCS.DTO;
 using MCS.Models;
+using MCS.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -27,7 +28,7 @@ namespace MCS.ViewModel
 	/// </summary>
 	public class MainViewModel : ViewModelBase
 	{
-		private IList<Person> peopleDb;
+		//private IList<Person> peopleDb;
 
 
 		public bool Errors { get; set; }
@@ -37,7 +38,7 @@ namespace MCS.ViewModel
 
 
 		private readonly IMapper mapper;
-
+		private readonly IPersonRepository personRepository;
 		private RelayCommand addNewPersonRowCommand;
 		private RelayCommand<DataGridCellEditEndingEventArgs> editPersonRowCommand;
 		private RelayCommand<int> deletePersonRowCommand;
@@ -147,9 +148,10 @@ namespace MCS.ViewModel
 			}
 		}
 
-		public MainViewModel(IMapper mapper)
+		public MainViewModel(IMapper mapper, IPersonRepository personRepository)
 		{
 			this.mapper = mapper;
+			this.personRepository = personRepository;
 
 			this.InitializeCanExecutes();
 
@@ -201,7 +203,7 @@ namespace MCS.ViewModel
 
 				var filteredPeople = this.mapper.Map<IList<Person>>(peopleWithoutDeleted);
 
-				this.SavePeopleToDb(filteredPeople);
+				this.personRepository.Save(filteredPeople);
 
 				IEnumerable<PersonForListDto> peopleForListDto = this.mapper.Map<IEnumerable<PersonForListDto>>(filteredPeople);
 
@@ -270,7 +272,7 @@ namespace MCS.ViewModel
 
 			this.People.CollectionChanged += People_CollectionChanged;
 
-			IEnumerable<Person> peopleFromDb = this.GetPeopleFromDb();
+			IEnumerable<Person> peopleFromDb = this.personRepository.Get();
 
 			IEnumerable<PersonForListDto> peopleForListDto = this.mapper.Map<IEnumerable<PersonForListDto>>(peopleFromDb);
 
@@ -280,35 +282,35 @@ namespace MCS.ViewModel
 			}
 		}
 
-		private IEnumerable<Person> GetPeopleFromDb()
-		{
-			if (this.peopleDb == null)
-			{
-				this.peopleDb = new List<Person>();
+		//private IEnumerable<Person> GetPeopleFromDb()
+		//{
+		//	if (this.peopleDb == null)
+		//	{
+		//		this.peopleDb = new List<Person>();
 
-				Person person = new Person
-				{
-					Id = 1,
-					FirstName = "John",
-					LastName = "Kovalsky",
-					StreetName = "Wiejska",
-					HouseNumber = "1",
-					ApartmentNumber = "2",
-					PostalCode = "12-123",
-					PhoneNumber = "123456789",
-					BirthDate = DateTime.Now.AddYears(-30)
-				};
+		//		Person person = new Person
+		//		{
+		//			Id = 1,
+		//			FirstName = "John",
+		//			LastName = "Kovalsky",
+		//			StreetName = "Wiejska",
+		//			HouseNumber = "1",
+		//			ApartmentNumber = "2",
+		//			PostalCode = "12-123",
+		//			PhoneNumber = "123456789",
+		//			BirthDate = DateTime.Now.AddYears(-30)
+		//		};
 
-				this.peopleDb.Add(person);
-			}
+		//		this.peopleDb.Add(person);
+		//	}
 
-			return this.peopleDb;
-		}
+		//	return this.peopleDb;
+		//}
 
-		private void SavePeopleToDb(IList<Person> people)
-		{
-			// repository here
-			this.peopleDb = people;
-		}
+		//private void SavePeopleToDb(IList<Person> people)
+		//{
+		//	// repository here
+		//	this.personRepository.Save(people);
+		//}
 	}
 }
