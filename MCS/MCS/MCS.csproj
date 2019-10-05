@@ -100,8 +100,12 @@
     <Compile Include="Models\Person.cs" />
     <Compile Include="Services\DateTimeService.cs" />
     <Compile Include="Services\IDateTimeService.cs" />
+    <Compile Include="Services\IMessageStringManager.cs" />
     <Compile Include="Services\IPathProvider.cs" />
+    <Compile Include="Services\IXmlService.cs" />
+    <Compile Include="Services\MessageStringManager.cs" />
     <Compile Include="Services\PathProvider.cs" />
+    <Compile Include="Services\XmlService.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">

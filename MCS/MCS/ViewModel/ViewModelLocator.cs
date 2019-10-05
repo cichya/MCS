@@ -49,8 +49,9 @@ namespace MCS.ViewModel
 
 			SimpleIoc.Default.Register<IMapper>(() => mapper);
 			
-			SimpleIoc.Default.Register<IMessageStringManager, MessageStringManager>);
-			SimpleIoc.Default.Register<IPathProvider, PathProvider>);
+			SimpleIoc.Default.Register<IMessageStringManager, MessageStringManager>();
+			SimpleIoc.Default.Register<IPathProvider, PathProvider>();
+			SimpleIoc.Default.Register<IXmlService, XmlService>();
 
             SimpleIoc.Default.Register<MainViewModel>();
         }
