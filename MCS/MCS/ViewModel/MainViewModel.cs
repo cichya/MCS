@@ -28,6 +28,8 @@ namespace MCS.ViewModel
 	/// </summary>
 	public class MainViewModel : ViewModelBase
 	{
+		private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
 		//private IList<Person> peopleDb;
 
 
@@ -177,8 +179,7 @@ namespace MCS.ViewModel
 			}
 			catch (Exception ex)
 			{
-
-		
+				Logger.Error(ex);
 			}
 			finally
 			{
@@ -196,12 +197,11 @@ namespace MCS.ViewModel
 			}
 			catch (Exception ex)
 			{
-				this.IsBusy = false;
-
+				Logger.Error(ex);
 			}
 			finally
 			{
-
+				this.IsBusy = false;
 			}	
 		}
 
@@ -227,8 +227,7 @@ namespace MCS.ViewModel
 			}
 			catch (Exception ex)
 			{
-
-				
+				Logger.Error(ex);
 			}
 			finally
 			{
@@ -269,7 +268,7 @@ namespace MCS.ViewModel
 			}
 			catch (Exception ex)
 			{
-
+				Logger.Error(ex);
 			}
 			finally
 			{
@@ -290,8 +289,7 @@ namespace MCS.ViewModel
 			}
 			catch (Exception ex)
 			{
-
-				
+				Logger.Error(ex);
 			}
 			finally
 			{
