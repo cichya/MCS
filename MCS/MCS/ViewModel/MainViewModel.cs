@@ -138,9 +138,7 @@ namespace MCS.ViewModel
 
 			this.InitializeCanExecutes();
 
-			this.GetDataFromDataBase();
-
-			
+			this.Refresh();
 		}
 
 		private void AddNewPersonRow()
@@ -184,11 +182,13 @@ namespace MCS.ViewModel
 		{
 			if (this.IsValid)
 			{
-				var filtered = this.People.Where(x => !x.IsDeleted).ToList();
+				var peopleWithoutDeleted = this.People.Where(x => !x.IsDeleted).ToList();
 
-				this.peopleDb = this.mapper.Map<IList<Person>>(filtered);
+				var filteredPeople = this.mapper.Map<IList<Person>>(peopleWithoutDeleted);
 
-				IEnumerable<PersonForListDto> peopleForListDto = this.mapper.Map<IEnumerable<PersonForListDto>>(peopleDb);
+				this.SavePeopleToDb(filteredPeople);
+
+				IEnumerable<PersonForListDto> peopleForListDto = this.mapper.Map<IEnumerable<PersonForListDto>>(filteredPeople);
 
 				this.People.Clear();
 
@@ -204,9 +204,7 @@ namespace MCS.ViewModel
 
 		private void DiscardChanges()
 		{
-			// get data from repository
-
-			this.GetDataFromDataBase();
+			this.Refresh();
 
 			this.DiscardChangesButtonIsEnabled = false;
 			this.IsValid = false;
@@ -242,7 +240,7 @@ namespace MCS.ViewModel
 			this.DiscardChangesButtonIsEnabled = true;
 		}
 
-		private void GetDataFromDataBase()
+		private void Refresh()
 		{
 			if (this.People != null)
 			{
@@ -257,6 +255,18 @@ namespace MCS.ViewModel
 
 			this.People.CollectionChanged += People_CollectionChanged;
 
+			IEnumerable<Person> peopleFromDb = this.GetPeopleFromDb();
+
+			IEnumerable<PersonForListDto> peopleForListDto = this.mapper.Map<IEnumerable<PersonForListDto>>(peopleFromDb);
+
+			foreach (var dto in peopleForListDto)
+			{
+				this.People.Add(dto);
+			}
+		}
+
+		private IEnumerable<Person> GetPeopleFromDb()
+		{
 			if (this.peopleDb == null)
 			{
 				this.peopleDb = new List<Person>();
@@ -277,12 +287,13 @@ namespace MCS.ViewModel
 				this.peopleDb.Add(person);
 			}
 
-			IEnumerable<PersonForListDto> peopleForListDto = this.mapper.Map<IEnumerable<PersonForListDto>>(peopleDb);
+			return this.peopleDb;
+		}
 
-			foreach (var dto in peopleForListDto)
-			{
-				this.People.Add(dto);
-			}
+		private void SavePeopleToDb(IList<Person> people)
+		{
+			// repository here
+			this.peopleDb = people;
 		}
 	}
 }

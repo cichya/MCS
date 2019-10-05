@@ -113,7 +113,7 @@
 						</Style>
 					</DataGridTextColumn.ElementStyle>
 				</DataGridTextColumn>
-				<DataGridTextColumn Header="BirthDate" Binding="{Binding BirthDate, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="auto">
+				<DataGridTextColumn Header="BirthDate" Binding="{Binding BirthDate, StringFormat=dd-MM-yyyy, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="auto">
 					<DataGridTextColumn.ElementStyle>
 						<Style TargetType="{x:Type TextBlock}">
 							<Setter Property="DataGridCell.ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
