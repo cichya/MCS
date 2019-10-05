@@ -16,6 +16,6 @@ namespace MCS.Models
 		public string ApartmentNumber { get; set; }
 		public string PostalCode { get; set; }
 		public string PhoneNumber { get; set; }
-		public DateTime BirthDate { get; set; }
+		public DateTime? BirthDate { get; set; }
 	}
 }

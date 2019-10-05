@@ -76,6 +76,7 @@
     <Compile Include="Converters\BoolToDeleteButtonContentConverter.cs" />
     <Compile Include="Converters\DataGridCellEditEndingEventArgsToPersonForListDtoConverter.cs" />
     <Compile Include="Helpers\AutoMapperProfile.cs" />
+    <Compile Include="Helpers\PersonCellValidationRules.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Services\DateTimeService.cs" />
     <Compile Include="Services\IDateTimeService.cs" />
@@ -122,6 +123,8 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Static\error.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

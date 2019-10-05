@@ -8,6 +8,6 @@ namespace MCS.Services
 {
 	public interface IDateTimeService
 	{
-		int CalculateAge(DateTime birth);
+		int CalculateAge(DateTime? birth);
 	}
 }

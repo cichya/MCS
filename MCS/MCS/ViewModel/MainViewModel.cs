@@ -6,6 +6,8 @@ using MCS.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Controls;
 
@@ -25,6 +27,15 @@ namespace MCS.ViewModel
 	/// </summary>
 	public class MainViewModel : ViewModelBase
 	{
+		private IList<Person> peopleDb;
+
+
+		public bool Errors { get; set; }
+
+
+		//public bool Errors { get { return errors; } set { errors = value; no } }
+
+
 		private readonly IMapper mapper;
 
 		private RelayCommand addNewPersonRowCommand;
@@ -69,7 +80,7 @@ namespace MCS.ViewModel
 			}
 		}
 
-		public RelayCommand RelayCommandSaveChangesCommand
+		public RelayCommand SaveChangesCommand
 		{
 			get
 			{
@@ -91,40 +102,58 @@ namespace MCS.ViewModel
 
 		public ObservableCollection<PersonForListDto> People { get; set; }
 
+		private bool isValid;
+
+		public bool IsValid
+		{
+			get
+			{
+				return this.isValid;
+			}
+			set
+			{
+				this.isValid = value;
+				this.RaisePropertyChanged(nameof(this.IsValid));
+			}
+		}
+
+		private bool discardChangesButtonIsEnabled;
+
+		public bool DiscardChangesButtonIsEnabled
+		{
+			get
+			{
+				return this.discardChangesButtonIsEnabled;
+			}
+			set
+			{
+				this.discardChangesButtonIsEnabled = value;
+				this.RaisePropertyChanged(nameof(this.DiscardChangesButtonIsEnabled));
+			}
+		}
+
 		public MainViewModel(IMapper mapper)
 		{
 			this.mapper = mapper;
 
 			this.InitializeCanExecutes();
 
-			this.People = new ObservableCollection<PersonForListDto>();
-
-			Person person = new Person
-			{
-				Id = 1,
-				FirstName = "John",
-				LastName = "Kovalsky",
-				StreetName = "Wiejska",
-				HouseNumber = "1",
-				ApartmentNumber = "2",
-				PostalCode = "12-123",
-				PhoneNumber = "123456789",
-				BirthDate = DateTime.Now.AddYears(-30)
-			};
-
-			PersonForListDto personForListDto = this.mapper.Map<PersonForListDto>(person);
-
-			this.People.Add(personForListDto);
+			this.Refresh();
 		}
 
 		private void AddNewPersonRow()
 		{
+			int id = this.People.Count > 0 ? this.People.Max(x => x.Id) + 1 : 1;
+
 			this.People.Add(new PersonForListDto
 			{
-				Id = this.People.Max(x => x.Id) + 1,
+				Id = id,
 				Age = "0",
 				IsNew = true
 			});
+
+			this.IsValid = false;
+			this.DiscardChangesButtonIsEnabled = true;
 		}
 
 		private void EditPersonRow(PersonForListDto editedPerson)
@@ -151,14 +180,34 @@ namespace MCS.ViewModel
 
 		private void SaveChanges()
 		{
-			IEnumerable<Person> peopleToSave = this.mapper.Map<IEnumerable<Person>>(this.People);
+			if (this.IsValid)
+			{
+				var peopleWithoutDeleted = this.People.Where(x => !x.IsDeleted).ToList();
 
-			// save to repository
+				var filteredPeople = this.mapper.Map<IList<Person>>(peopleWithoutDeleted);
+
+				this.SavePeopleToDb(filteredPeople);
+
+				IEnumerable<PersonForListDto> peopleForListDto = this.mapper.Map<IEnumerable<PersonForListDto>>(filteredPeople);
+
+				this.People.Clear();
+
+				foreach (var item in peopleForListDto)
+				{
+					this.People.Add(item);
+				}
+
+				this.DiscardChangesButtonIsEnabled = false;
+				this.IsValid = false;
+			}
 		}
 
 		private void DiscardChanges()
 		{
-			// get data from repository
+			this.Refresh();
+
+			this.DiscardChangesButtonIsEnabled = false;
+			this.IsValid = false;
 		}
 
 		private void InitializeCanExecutes()
@@ -168,6 +217,83 @@ namespace MCS.ViewModel
 			this.deletePersonRowCommandCanExecute = true;
 			this.saveChangesCommandCanExecute = true;
 			this.discardChangesCommandCanExecute = true;
+		}
+
+		private void People_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		{
+			if (e.OldItems != null)
+			{
+				foreach (INotifyPropertyChanged item in e.OldItems)
+					item.PropertyChanged -= People_Item_PropertyChanged;
+			}
+			if (e.NewItems != null)
+			{
+				foreach (INotifyPropertyChanged item in e.NewItems)
+					item.PropertyChanged += People_Item_PropertyChanged;
+			}
+		}
+
+		private void People_Item_PropertyChanged(object sender, PropertyChangedEventArgs e)
+		{
+			this.IsValid = !this.People.Any(x => x.HasError);
+
+			this.DiscardChangesButtonIsEnabled = true;
+		}
+
+		private void Refresh()
+		{
+			if (this.People != null)
+			{
+				this.People.CollectionChanged -= People_CollectionChanged;
+
+				this.People.Clear();
+			}
+			else
+			{
+				this.People = new ObservableCollection<PersonForListDto>();
+			}
+
+			this.People.CollectionChanged += People_CollectionChanged;
+
+			IEnumerable<Person> peopleFromDb = this.GetPeopleFromDb();
+
+			IEnumerable<PersonForListDto> peopleForListDto = this.mapper.Map<IEnumerable<PersonForListDto>>(peopleFromDb);
+
+			foreach (var dto in peopleForListDto)
+			{
+				this.People.Add(dto);
+			}
+		}
+
+		private IEnumerable<Person> GetPeopleFromDb()
+		{
+			if (this.peopleDb == null)
+			{
+				this.peopleDb = new List<Person>();
+
+				Person person = new Person
+				{
+					Id = 1,
+					FirstName = "John",
+					LastName = "Kovalsky",
+					StreetName = "Wiejska",
+					HouseNumber = "1",
+					ApartmentNumber = "2",
+					PostalCode = "12-123",
+					PhoneNumber = "123456789",
+					BirthDate = DateTime.Now.AddYears(-30)
+				};
+
+				this.peopleDb.Add(person);
+			}
+
+			return this.peopleDb;
+		}
+
+		private void SavePeopleToDb(IList<Person> people)
+		{
+			// repository here
+			this.peopleDb = people;
 		}
 	}
 }
