@@ -98,6 +98,8 @@
       <DependentUpon>Lang.resx</DependentUpon>
     </Compile>
     <Compile Include="Models\Person.cs" />
+    <Compile Include="Repositories\IPersonRepository.cs" />
+    <Compile Include="Repositories\PersonRepository.cs" />
     <Compile Include="Services\DateTimeService.cs" />
     <Compile Include="Services\IDateTimeService.cs" />
     <Compile Include="Services\IMessageStringManager.cs" />
