@@ -25,6 +25,12 @@ namespace MCS.ViewModel
 	/// </summary>
 	public class MainViewModel : ViewModelBase
 	{
+		public bool Errors { get; set; }
+
+
+		//public bool Errors { get { return errors; } set { errors = value; no } }
+
+
 		private readonly IMapper mapper;
 
 		private RelayCommand addNewPersonRowCommand;
