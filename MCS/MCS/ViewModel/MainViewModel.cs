@@ -145,9 +145,11 @@ namespace MCS.ViewModel
 
 		private void AddNewPersonRow()
 		{
+			int id = this.People.Count > 0 ? this.People.Max(x => x.Id) + 1 : 1;
+
 			this.People.Add(new PersonForListDto
 			{
-				Id = this.People.Max(x => x.Id) + 1,
+				Id = id,
 				Age = "0",
 				IsNew = true
 			});
@@ -182,7 +184,9 @@ namespace MCS.ViewModel
 		{
 			if (this.IsValid)
 			{
-				this.peopleDb = this.mapper.Map<IList<Person>>(this.People);
+				var filtered = this.People.Where(x => !x.IsDeleted).ToList();
+
+				this.peopleDb = this.mapper.Map<IList<Person>>(filtered);
 
 				IEnumerable<PersonForListDto> peopleForListDto = this.mapper.Map<IEnumerable<PersonForListDto>>(peopleDb);
 
