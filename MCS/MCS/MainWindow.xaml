@@ -47,11 +47,11 @@
 							<Setter Property="BorderBrush" Value="Red" />
 							<Setter Property="BorderThickness" Value="1" />
 						</DataTrigger>
-						<Trigger Property="Validation.HasError" Value="true">
+						<!--<Trigger Property="Validation.HasError" Value="true">
 							<Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self},Path=(Validation.Errors)[0].ErrorContent}"/>
-						</Trigger>
+						</Trigger>-->
 					</Style.Triggers>
-					<Setter Property="ValidationErrorTemplate">
+					<!--<Setter Property="ValidationErrorTemplate">
 						<Setter.Value>
 							<ControlTemplate>
 								<Image Source="{StaticResource ErrorImageResource}"
@@ -60,31 +60,66 @@
 									Width="11" Height="11" />
 							</ControlTemplate>
 						</Setter.Value>
-					</Setter>
+					</Setter>-->
 				</Style>
 			</DataGrid.RowStyle>
+			<DataGrid.RowValidationErrorTemplate>
+				<ControlTemplate>
+					<TextBlock Text=""></TextBlock>
+				</ControlTemplate>
+			</DataGrid.RowValidationErrorTemplate>
 			<DataGrid.Columns>
 				<DataGridTextColumn Header="Lp." Binding="{Binding Id}" Width="auto" IsReadOnly="True"/>
-
-				<DataGridTextColumn Header="FirstName" Binding="{Binding FirstName, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="auto"/>
-
-				<!--<DataGridTextColumn x:Name="FirstNameDataGridTextColumn" Header="FirstName">
-					<DataGridTextColumn.Binding>
-						<Binding Path="FirstName">
-							<Binding.ValidationRules>
-								<local:PersonCellValidationRules />
-							</Binding.ValidationRules>
-						</Binding>
-					</DataGridTextColumn.Binding>
-				</DataGridTextColumn>-->
-
-				<DataGridTextColumn Header="LastName" Binding="{Binding LastName, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="auto"/>
-				<DataGridTextColumn Header="StreetName" Binding="{Binding StreetName, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="auto"/>
-				<DataGridTextColumn Header="HouseNumber" Binding="{Binding HouseNumber, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="auto"/>
+				<DataGridTextColumn Header="FirstName" Binding="{Binding FirstName, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="auto">
+					<DataGridTextColumn.ElementStyle>
+						<Style TargetType="{x:Type TextBlock}">
+							<Setter Property="DataGridCell.ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+						</Style>
+					</DataGridTextColumn.ElementStyle>
+				</DataGridTextColumn>
+				<DataGridTextColumn Header="LastName" Binding="{Binding LastName, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="auto">
+					<DataGridTextColumn.ElementStyle>
+						<Style TargetType="{x:Type TextBlock}">
+							<Setter Property="DataGridCell.ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+						</Style>
+					</DataGridTextColumn.ElementStyle>
+				</DataGridTextColumn>
+				<DataGridTextColumn Header="StreetName" Binding="{Binding StreetName, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="auto">
+					<DataGridTextColumn.ElementStyle>
+						<Style TargetType="{x:Type TextBlock}">
+							<Setter Property="DataGridCell.ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+						</Style>
+					</DataGridTextColumn.ElementStyle>
+				</DataGridTextColumn>
+				<DataGridTextColumn Header="HouseNumber" Binding="{Binding HouseNumber, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="auto">
+					<DataGridTextColumn.ElementStyle>
+						<Style TargetType="{x:Type TextBlock}">
+							<Setter Property="DataGridCell.ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+						</Style>
+					</DataGridTextColumn.ElementStyle>
+				</DataGridTextColumn>
 				<DataGridTextColumn Header="ApartmentNumber" Binding="{Binding ApartmentNumber}" Width="auto"/>
-				<DataGridTextColumn Header="PostalCode" Binding="{Binding PostalCode, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="auto"/>
-				<DataGridTextColumn Header="PhoneNumber" Binding="{Binding PhoneNumber, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="auto"/>
-				<DataGridTextColumn Header="BirthDate" Binding="{Binding BirthDate, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="auto"/>
+				<DataGridTextColumn Header="PostalCode" Binding="{Binding PostalCode, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="auto">
+					<DataGridTextColumn.ElementStyle>
+						<Style TargetType="{x:Type TextBlock}">
+							<Setter Property="DataGridCell.ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+						</Style>
+					</DataGridTextColumn.ElementStyle>
+				</DataGridTextColumn>
+				<DataGridTextColumn Header="PhoneNumber" Binding="{Binding PhoneNumber, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="auto">
+					<DataGridTextColumn.ElementStyle>
+						<Style TargetType="{x:Type TextBlock}">
+							<Setter Property="DataGridCell.ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+						</Style>
+					</DataGridTextColumn.ElementStyle>
+				</DataGridTextColumn>
+				<DataGridTextColumn Header="BirthDate" Binding="{Binding BirthDate, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="auto">
+					<DataGridTextColumn.ElementStyle>
+						<Style TargetType="{x:Type TextBlock}">
+							<Setter Property="DataGridCell.ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+						</Style>
+					</DataGridTextColumn.ElementStyle>
+				</DataGridTextColumn>
 				<DataGridTextColumn Header="Age" Binding="{Binding Age}" Width="auto" IsReadOnly="True" />
 				<DataGridTemplateColumn>
 					<DataGridTemplateColumn.CellTemplate>
