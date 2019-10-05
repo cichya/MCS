@@ -100,6 +100,8 @@
     <Compile Include="Models\Person.cs" />
     <Compile Include="Services\DateTimeService.cs" />
     <Compile Include="Services\IDateTimeService.cs" />
+    <Compile Include="Services\IPathProvider.cs" />
+    <Compile Include="Services\PathProvider.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">

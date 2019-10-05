@@ -115,6 +115,15 @@ namespace MCS.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot find current user profile path.
+        /// </summary>
+        public static string CannotFindCurrentUserProfilePathExceptionMessage {
+            get {
+                return ResourceManager.GetString("CannotFindCurrentUserProfilePathExceptionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to First Name.
         /// </summary>
         public static string FirstNameHeaderDataGridLabel {

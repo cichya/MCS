@@ -135,6 +135,9 @@
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="CannotFindCurrentUserProfilePathExceptionMessage" xml:space="preserve">
+    <value>Cannot find current user profile path</value>
+  </data>
   <data name="FirstNameHeaderDataGridLabel" xml:space="preserve">
     <value>First Name</value>
   </data>
