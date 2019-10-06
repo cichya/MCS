@@ -12,7 +12,7 @@ namespace MCS.Tests.Services
 	public class DateTimeServiceTests
 	{
 		[TestMethod]
-		public void CalculateAge_Birth_Null_Return_0_Test()
+		public void CalculateAge_BirthNull_Return0()
 		{
 			DateTime? birth = null;
 
@@ -24,7 +24,7 @@ namespace MCS.Tests.Services
 		}
 
 		[TestMethod]
-		public void CalculateAge_Equal_3_Years_Return_2_Test()
+		public void CalculateAge_Equal3Years_Return2()
 		{
 			DateTime birth = DateTime.Now.AddYears(-3);
 
@@ -36,7 +36,7 @@ namespace MCS.Tests.Services
 		}
 
 		[TestMethod]
-		public void CalculateAge_More_Than_3_Years_Return_3_Test()
+		public void CalculateAge_MoreThan3_YearsReturn3()
 		{
 			DateTime birth = DateTime.Now.AddYears(-3).AddDays(-1);
 

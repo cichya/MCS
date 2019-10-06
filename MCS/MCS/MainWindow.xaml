@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MCS.Helpers"
 		xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
 		xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Platform"
 		xmlns:converters="clr-namespace:MCS.Converters"
@@ -14,9 +13,7 @@
 		DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
 	<Window.Resources>
 		<ResourceDictionary>
-			<converters:DataGridCellEditEndingEventArgsToPersonForListDtoConverter x:Key="DataGridCellEditEndingEventArgsToPersonForListDtoConverter"/>
 			<converters:BoolToDeleteButtonContentConverter x:Key="BoolToDeleteButtonContentConverter"/>
-			<BitmapImage x:Key="ErrorImageResource" UriSource="./Static/error.png" />
 			<Style x:Key="NewPersonDataGridRow" TargetType="{x:Type DataGridRow}">
 				<Setter Property="BorderBrush" Value="Green" />
 				<Setter Property="BorderThickness" Value="1" />
@@ -49,20 +46,7 @@
                                  Value="True">
 										<Setter Property="Background" Value="Red" />
 									</DataTrigger>
-									<!--<Trigger Property="Validation.HasError" Value="true">
-							<Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self},Path=(Validation.Errors)[0].ErrorContent}"/>
-						</Trigger>-->
 								</Style.Triggers>
-								<!--<Setter Property="ValidationErrorTemplate">
-						<Setter.Value>
-							<ControlTemplate>
-								<Image Source="{StaticResource ErrorImageResource}"
-									ToolTip="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGridRow}}, Path=(Validation.Errors)[0].ErrorContent}"
-									Margin="0"
-									Width="11" Height="11" />
-							</ControlTemplate>
-						</Setter.Value>
-					</Setter>-->
 							</Style>
 						</DataGrid.RowStyle>
 						<DataGrid.RowValidationErrorTemplate>
@@ -71,7 +55,7 @@
 							</ControlTemplate>
 						</DataGrid.RowValidationErrorTemplate>
 						<DataGrid.Columns>
-							<DataGridTextColumn Binding="{Binding Id}" Width="auto" IsReadOnly="True"/>
+							<DataGridTextColumn Binding="{Binding On}" Width="auto" IsReadOnly="True"/>
 							<DataGridTextColumn Header="{x:Static l:Lang.FirstNameHeaderDataGridLabel}" Binding="{Binding FirstName, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Width="*">
 								<DataGridTextColumn.ElementStyle>
 									<Style TargetType="{x:Type TextBlock}">

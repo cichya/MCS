@@ -16,6 +16,8 @@ namespace MCS.Repositories
 		private readonly IPathProvider pathProvider;
 		private readonly IXmlService xmlService;
 
+		private static readonly object lockObj = new Object();
+
 		public PersonRepository(IPathProvider pathProvider, IXmlService xmlService)
 		{
 			this.pathProvider = pathProvider;
@@ -24,32 +26,38 @@ namespace MCS.Repositories
 
 		public IList<Person> Get()
 		{
-			string userProfilePath = this.pathProvider.GetUserProfilePath();
-
-			string filePath = Path.Combine(userProfilePath, dbFileName);
-
-			if (!this.xmlService.CheckFileExists(filePath))
+			lock (lockObj)
 			{
-				this.xmlService.CreateXmlFile(filePath);
+				string userProfilePath = this.pathProvider.GetUserProfilePath();
 
-				return null;
+				string filePath = Path.Combine(userProfilePath, dbFileName);
+
+				if (!this.xmlService.CheckFileExists(filePath))
+				{
+					this.xmlService.CreateXmlFile(filePath);
+
+					return null;
+				}
+
+				return this.xmlService.LoadXml(filePath);
 			}
-
-			return this.xmlService.LoadXml(filePath);
 		}
 
 		public void Save(IList<Person> people)
 		{
-			string userProfilePath = this.pathProvider.GetUserProfilePath();
-
-			string filePath = Path.Combine(userProfilePath, dbFileName);
-
-			if (!this.xmlService.CheckFileExists(filePath))
+			lock (lockObj)
 			{
-				this.xmlService.CreateXmlFile(filePath);
-			}
+				string userProfilePath = this.pathProvider.GetUserProfilePath();
 
-			this.xmlService.SaveXml(filePath, people);
+				string filePath = Path.Combine(userProfilePath, dbFileName);
+
+				if (!this.xmlService.CheckFileExists(filePath))
+				{
+					this.xmlService.CreateXmlFile(filePath);
+				}
+
+				this.xmlService.SaveXml(filePath, people);
+			}
 		}
 	}
 }

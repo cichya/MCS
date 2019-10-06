@@ -12,7 +12,7 @@ namespace MCS.Tests.Services
 	public class PathProviderTests
 	{
 		[TestMethod]
-		public void PathProvider_Test()
+		public void PathProvider_Success()
 		{
 			var target = new PathProvider(null);
 

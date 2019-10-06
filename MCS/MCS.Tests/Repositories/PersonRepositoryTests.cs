@@ -15,69 +15,36 @@ namespace MCS.Tests.Repositories
 	[TestClass]
 	public class PersonRepositoryTests
 	{
+		private const string userProfilePath = "xxx";
+
+		private Mock<IPathProvider> pathProviderMock;
+		private Mock<IXmlService> xmlServiceMock;
+		private string filePath;
+		private List<Person> people;
+
 		[TestMethod]
-		public void Get_File_Not_Exists_Return_Null_Test()
+		public void Get_FileNotExists_ReturnNull()
 		{
-			string userProfilePath = "xxx";
-
-			string filePath = Path.Combine(userProfilePath, "people_db.xml");
-
-			var pathProviderMock = new Mock<IPathProvider>(MockBehavior.Strict);
-
-			pathProviderMock.Setup(m => m.GetUserProfilePath()).Returns(userProfilePath);
-
-			var xmlServiceMock = new Mock<IXmlService>(MockBehavior.Strict);
-
-			xmlServiceMock.Setup(m => m.CheckFileExists(filePath)).Returns(false);
+			this.xmlServiceMock.Setup(m => m.CheckFileExists(this.filePath)).Returns(false);
 			
-			xmlServiceMock.Setup(m => m.CreateXmlFile(filePath));
-
-			var target = new PersonRepository(pathProviderMock.Object, xmlServiceMock.Object);
+			var target = new PersonRepository(this.pathProviderMock.Object, this.xmlServiceMock.Object);
 
 			IList<Person> result = target.Get();
 
 			Assert.IsNull(result);
 
-			pathProviderMock.Verify(m => m.GetUserProfilePath(), Times.Once);
-			xmlServiceMock.Verify(m => m.CheckFileExists(filePath), Times.Once);
-			xmlServiceMock.Verify(m => m.CreateXmlFile(filePath), Times.Once);
-			xmlServiceMock.Verify(m => m.LoadXml(filePath), Times.Never);
+			this.pathProviderMock.Verify(m => m.GetUserProfilePath(), Times.Once);
+			this.xmlServiceMock.Verify(m => m.CheckFileExists(this.filePath), Times.Once);
+			this.xmlServiceMock.Verify(m => m.CreateXmlFile(this.filePath), Times.Once);
+			this.xmlServiceMock.Verify(m => m.LoadXml(this.filePath), Times.Never);
 		}
 
 		[TestMethod]
-		public void Get_File_Exists_Return_List_Test()
+		public void Get_FileExists_ReturnList()
 		{
-			string userProfilePath = "xxx";
+			this.xmlServiceMock.Setup(m => m.CheckFileExists(filePath)).Returns(true);
 
-			string filePath = Path.Combine(userProfilePath, "people_db.xml");
-
-			var pathProviderMock = new Mock<IPathProvider>(MockBehavior.Strict);
-
-			pathProviderMock.Setup(m => m.GetUserProfilePath()).Returns(userProfilePath);
-
-			var xmlServiceMock = new Mock<IXmlService>(MockBehavior.Strict);
-
-			xmlServiceMock.Setup(m => m.CheckFileExists(filePath)).Returns(true);
-
-			List<Person> people = new List<Person>
-			{
-				new Person
-				{
-					Id = 1,
-					ApartmentNumber = "1",
-					BirthDate = DateTime.Now.AddYears(-20),
-					FirstName = "John",
-					HouseNumber = "2",
-					LastName = "Doe",
-					PhoneNumber = "123123",
-					PostalCode = "123-12",
-					StreetName = "Street"
-				}
-			};
-
-			xmlServiceMock.Setup(m => m.LoadXml(filePath)).Returns(people);
-
-			var target = new PersonRepository(pathProviderMock.Object, xmlServiceMock.Object);
+			var target = new PersonRepository(this.pathProviderMock.Object, this.xmlServiceMock.Object);
 
 			IList<Person> result = target.Get();
 
@@ -94,30 +61,55 @@ namespace MCS.Tests.Repositories
 			Assert.AreEqual("123-12", result[0].PostalCode);
 			Assert.AreEqual("Street", result[0].StreetName);
 
-			pathProviderMock.Verify(m => m.GetUserProfilePath(), Times.Once);
-			xmlServiceMock.Verify(m => m.CheckFileExists(filePath), Times.Once);
-			xmlServiceMock.Verify(m => m.CreateXmlFile(filePath), Times.Never);
-			xmlServiceMock.Verify(m => m.LoadXml(filePath), Times.Once);
+			this.pathProviderMock.Verify(m => m.GetUserProfilePath(), Times.Once);
+			this.xmlServiceMock.Verify(m => m.CheckFileExists(this.filePath), Times.Once);
+			this.xmlServiceMock.Verify(m => m.CreateXmlFile(this.filePath), Times.Never);
+			this.xmlServiceMock.Verify(m => m.LoadXml(this.filePath), Times.Once);
 		}
 
 		[TestMethod]
-		public void Save_File_Not_Exists_CreateFile_Execute_Test()
+		public void Save_FileNotExists_CreateFileExecute()
 		{
-			string userProfilePath = "xxx";
+			this.xmlServiceMock.Setup(m => m.CheckFileExists(this.filePath)).Returns(false);
 
-			string filePath = Path.Combine(userProfilePath, "people_db.xml");
+			var target = new PersonRepository(this.pathProviderMock.Object, this.xmlServiceMock.Object);
 
-			var pathProviderMock = new Mock<IPathProvider>(MockBehavior.Strict);
+			target.Save(people);
 
-			pathProviderMock.Setup(m => m.GetUserProfilePath()).Returns(userProfilePath);
+			this.pathProviderMock.Verify(m => m.GetUserProfilePath(), Times.Once);
+			this.xmlServiceMock.Verify(m => m.CheckFileExists(this.filePath), Times.Once);
+			this.xmlServiceMock.Verify(m => m.CreateXmlFile(this.filePath), Times.Once);
+			this.xmlServiceMock.Verify(m => m.SaveXml(this.filePath, this.people), Times.Once);
+		}
 
-			var xmlServiceMock = new Mock<IXmlService>(MockBehavior.Strict);
+		[TestMethod]
+		public void Save_FileExists_CreateFileNotExecute()
+		{
+			this.xmlServiceMock.Setup(m => m.CheckFileExists(this.filePath)).Returns(true);
 
-			xmlServiceMock.Setup(m => m.CheckFileExists(filePath)).Returns(false);
+			var target = new PersonRepository(this.pathProviderMock.Object, this.xmlServiceMock.Object);
 
-			xmlServiceMock.Setup(m => m.CreateXmlFile(filePath));
+			target.Save(people);
 
-			List<Person> people = new List<Person>
+			this.pathProviderMock.Verify(m => m.GetUserProfilePath(), Times.Once);
+			this.xmlServiceMock.Verify(m => m.CheckFileExists(this.filePath), Times.Once);
+			this.xmlServiceMock.Verify(m => m.CreateXmlFile(this.filePath), Times.Never);
+			this.xmlServiceMock.Verify(m => m.SaveXml(this.filePath, this.people), Times.Once);
+		}
+
+		[TestInitialize]
+		public void Init()
+		{
+			this.pathProviderMock = new Mock<IPathProvider>(MockBehavior.Strict);
+			this.xmlServiceMock = new Mock<IXmlService>(MockBehavior.Strict);
+
+			this.filePath = Path.Combine(userProfilePath, "people_db.xml");
+
+			this.pathProviderMock.Setup(m => m.GetUserProfilePath()).Returns(userProfilePath);
+
+			this.xmlServiceMock.Setup(m => m.CreateXmlFile(this.filePath));
+
+			this.people = new List<Person>
 			{
 				new Person
 				{
@@ -133,61 +125,9 @@ namespace MCS.Tests.Repositories
 				}
 			};
 
-			xmlServiceMock.Setup(m => m.SaveXml(filePath, people));
+			this.xmlServiceMock.Setup(m => m.LoadXml(this.filePath)).Returns(this.people);
 
-			var target = new PersonRepository(pathProviderMock.Object, xmlServiceMock.Object);
-
-			target.Save(people);
-
-			pathProviderMock.Verify(m => m.GetUserProfilePath(), Times.Once);
-			xmlServiceMock.Verify(m => m.CheckFileExists(filePath), Times.Once);
-			xmlServiceMock.Verify(m => m.CreateXmlFile(filePath), Times.Once);
-			xmlServiceMock.Verify(m => m.SaveXml(filePath, people), Times.Once);
-		}
-
-		[TestMethod]
-		public void Save_File_Exists_CreateFile_Not_Execute_Test()
-		{
-			string userProfilePath = "xxx";
-
-			string filePath = Path.Combine(userProfilePath, "people_db.xml");
-
-			var pathProviderMock = new Mock<IPathProvider>(MockBehavior.Strict);
-
-			pathProviderMock.Setup(m => m.GetUserProfilePath()).Returns(userProfilePath);
-
-			var xmlServiceMock = new Mock<IXmlService>(MockBehavior.Strict);
-
-			xmlServiceMock.Setup(m => m.CheckFileExists(filePath)).Returns(true);
-
-			xmlServiceMock.Setup(m => m.CreateXmlFile(filePath));
-
-			List<Person> people = new List<Person>
-			{
-				new Person
-				{
-					Id = 1,
-					ApartmentNumber = "1",
-					BirthDate = DateTime.Now.AddYears(-20),
-					FirstName = "John",
-					HouseNumber = "2",
-					LastName = "Doe",
-					PhoneNumber = "123123",
-					PostalCode = "123-12",
-					StreetName = "Street"
-				}
-			};
-
-			xmlServiceMock.Setup(m => m.SaveXml(filePath, people));
-
-			var target = new PersonRepository(pathProviderMock.Object, xmlServiceMock.Object);
-
-			target.Save(people);
-
-			pathProviderMock.Verify(m => m.GetUserProfilePath(), Times.Once);
-			xmlServiceMock.Verify(m => m.CheckFileExists(filePath), Times.Once);
-			xmlServiceMock.Verify(m => m.CreateXmlFile(filePath), Times.Never);
-			xmlServiceMock.Verify(m => m.SaveXml(filePath, people), Times.Once);
+			this.xmlServiceMock.Setup(m => m.SaveXml(this.filePath, this.people));
 		}
 	}
 }

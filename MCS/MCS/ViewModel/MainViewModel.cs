@@ -2,8 +2,10 @@ using AutoMapper;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using MCS.DTO;
+using MCS.Helpers;
 using MCS.Models;
 using MCS.Repositories;
+using MCS.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -28,17 +30,12 @@ namespace MCS.ViewModel
 	/// </summary>
 	public class MainViewModel : ViewModelBase
 	{
-		//private IList<Person> peopleDb;
-
-
-		public bool Errors { get; set; }
-
-
-		//public bool Errors { get { return errors; } set { errors = value; no } }
-
+		private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
 		private readonly IMapper mapper;
 		private readonly IPersonRepository personRepository;
+		private readonly IMessageBoxService messageBoxService;
+		private readonly IMessageStringManager messageStringManager;
 		private RelayCommand addNewPersonRowCommand;
 		private RelayCommand<DataGridCellEditEndingEventArgs> editPersonRowCommand;
 		private RelayCommand<int> deletePersonRowCommand;
@@ -50,6 +47,9 @@ namespace MCS.ViewModel
 		private bool deletePersonRowCommandCanExecute;
 		private bool saveChangesCommandCanExecute;
 		private bool discardChangesCommandCanExecute;
+		private bool isBusy;
+		private bool isValid;
+		private bool discardChangesButtonIsEnabled;
 
 		public RelayCommand AddNewPersonRowCommand
 		{
@@ -103,8 +103,6 @@ namespace MCS.ViewModel
 
 		public ObservableCollection<PersonForListDto> People { get; set; }
 
-		private bool isBusy;
-
 		public bool IsBusy
 		{
 			get
@@ -117,8 +115,6 @@ namespace MCS.ViewModel
 				this.RaisePropertyChanged(nameof(this.IsBusy));
 			}
 		}
-
-		private bool isValid;
 
 		public bool IsValid
 		{
@@ -133,8 +129,6 @@ namespace MCS.ViewModel
 			}
 		}
 
-		private bool discardChangesButtonIsEnabled;
-
 		public bool DiscardChangesButtonIsEnabled
 		{
 			get
@@ -148,83 +142,178 @@ namespace MCS.ViewModel
 			}
 		}
 
-		public MainViewModel(IMapper mapper, IPersonRepository personRepository)
+		public MainViewModel(IMapper mapper, IPersonRepository personRepository, IMessageBoxService messageBoxService, IMessageStringManager messageStringManager)
 		{
 			this.mapper = mapper;
 			this.personRepository = personRepository;
+			this.messageBoxService = messageBoxService;
+			this.messageStringManager = messageStringManager;
 
 			this.InitializeCanExecutes();
 
-			this.Refresh();
+			try
+			{
+				this.Refresh();
+			}
+			catch (CannotCreateFileException ex)
+			{
+				Logger.Error(ex);
+				this.messageBoxService.ShowErrorMsgBox(ex.Message);
+			}
 		}
 
 		private void AddNewPersonRow()
 		{
-			int id = this.People.Count > 0 ? this.People.Max(x => x.Id) + 1 : 1;
-
-			this.People.Add(new PersonForListDto
+			try
 			{
-				Id = id,
-				Age = "0",
-				IsNew = true
-			});
+				this.IsBusy = true;
 
-			this.IsValid = false;
-			this.DiscardChangesButtonIsEnabled = true;
+				int on = this.People.Count > 0 ? this.People.Last().On + 1 : 1;
+				int id = this.People.Count > 0 ? this.People.Max(x => x.Id) + 1 : 1;
+				
+				this.People.Add(new PersonForListDto
+				{
+					On = on,
+					Id = id,
+					IsNew = true
+				});
+
+				this.IsValid = false;
+				this.DiscardChangesButtonIsEnabled = true;
+			}
+			catch (Exception ex)
+			{
+				Logger.Error(ex);
+				this.messageBoxService.ShowErrorMsgBox(this.messageStringManager.ErrorMessageBoxContentMessage);
+			}
+			finally
+			{
+				this.IsBusy = false;
+			}
 		}
 
 		private void EditPersonRow(PersonForListDto editedPerson)
 		{
-			editedPerson.IsEdited = true;
+			try
+			{
+				this.IsBusy = true;
+
+				editedPerson.IsEdited = true;
+			}
+			catch (Exception ex)
+			{
+				Logger.Error(ex);
+				this.messageBoxService.ShowErrorMsgBox(this.messageStringManager.ErrorMessageBoxContentMessage);
+			}
+			finally
+			{
+				this.IsBusy = false;
+			}	
 		}
 
 		private void DeletePersonRow(int id)
 		{
-			PersonForListDto person = this.People.FirstOrDefault(x => x.Id == id);
-			
-			if (person != null)
+			try
 			{
-				if (person.IsNew)
+				this.IsBusy = true;
+
+				PersonForListDto person = this.People.FirstOrDefault(x => x.Id == id);
+
+				if (person != null)
 				{
-					this.People.Remove(person);
+					if (person.IsNew)
+					{
+						this.People.Remove(person);
+					}
+					else
+					{
+						person.IsDeleted = !person.IsDeleted;
+					}
 				}
-				else
-				{
-					person.IsDeleted = !person.IsDeleted;
-				}
+			}
+			catch (Exception ex)
+			{
+				Logger.Error(ex);
+				this.messageBoxService.ShowErrorMsgBox(this.messageStringManager.ErrorMessageBoxContentMessage);
+			}
+			finally
+			{
+				this.IsBusy = false;
 			}
 		}
 
 		private void SaveChanges()
 		{
-			if (this.IsValid)
+			try
 			{
-				var peopleWithoutDeleted = this.People.Where(x => !x.IsDeleted).ToList();
+				this.IsBusy = true;
 
-				var filteredPeople = this.mapper.Map<IList<Person>>(peopleWithoutDeleted);
-
-				this.personRepository.Save(filteredPeople);
-
-				IEnumerable<PersonForListDto> peopleForListDto = this.mapper.Map<IEnumerable<PersonForListDto>>(filteredPeople);
-
-				this.People.Clear();
-
-				foreach (var item in peopleForListDto)
+				if (this.IsValid)
 				{
-					this.People.Add(item);
-				}
+					var peopleWithoutDeleted = this.People.Where(x => !x.IsDeleted).ToList();
 
-				this.DiscardChangesButtonIsEnabled = false;
-				this.IsValid = false;
+					var filteredPeople = this.mapper.Map<IList<Person>>(peopleWithoutDeleted);
+
+					this.personRepository.Save(filteredPeople);
+
+					IEnumerable<PersonForListDto> peopleForListDto = this.mapper.Map<IEnumerable<PersonForListDto>>(filteredPeople);
+
+					this.People.Clear();
+
+					for (int i = 0; i < peopleForListDto.Count(); i++)
+					{
+						PersonForListDto dto = peopleForListDto.ElementAt(i);
+
+						dto.On = i + 1;
+
+						this.People.Add(dto);
+					}
+
+					this.DiscardChangesButtonIsEnabled = false;
+					this.IsValid = false;
+				}
 			}
+			catch (CannotCreateFileException ex)
+			{
+				Logger.Error(ex);
+				this.messageBoxService.ShowErrorMsgBox(ex.Message);
+			}
+			catch (Exception ex)
+			{
+				Logger.Error(ex);
+				this.messageBoxService.ShowErrorMsgBox(this.messageStringManager.ErrorMessageBoxContentMessage);
+			}
+			finally
+			{
+				this.IsBusy = false;
+			}		
 		}
 
 		private void DiscardChanges()
 		{
-			this.Refresh();
+			try
+			{
+				this.IsBusy = true;
 
-			this.DiscardChangesButtonIsEnabled = false;
-			this.IsValid = false;
+				this.Refresh();
+
+				this.DiscardChangesButtonIsEnabled = false;
+				this.IsValid = false;
+			}
+			catch (CannotCreateFileException ex)
+			{
+				Logger.Error(ex);
+				this.messageBoxService.ShowErrorMsgBox(ex.Message);
+			}
+			catch (Exception ex)
+			{
+				Logger.Error(ex);
+				this.messageBoxService.ShowErrorMsgBox(this.messageStringManager.ErrorMessageBoxContentMessage);
+			}
+			finally
+			{
+				this.IsBusy = false;
+			}
 		}
 
 		private void InitializeCanExecutes()
@@ -241,12 +330,16 @@ namespace MCS.ViewModel
 			if (e.OldItems != null)
 			{
 				foreach (INotifyPropertyChanged item in e.OldItems)
+				{
 					item.PropertyChanged -= People_Item_PropertyChanged;
+				}
 			}
 			if (e.NewItems != null)
 			{
 				foreach (INotifyPropertyChanged item in e.NewItems)
+				{
 					item.PropertyChanged += People_Item_PropertyChanged;
+				}
 			}
 		}
 
@@ -276,41 +369,14 @@ namespace MCS.ViewModel
 
 			IEnumerable<PersonForListDto> peopleForListDto = this.mapper.Map<IEnumerable<PersonForListDto>>(peopleFromDb);
 
-			foreach (var dto in peopleForListDto)
+			for (int i = 0; i < peopleForListDto.Count(); i++)
 			{
+				PersonForListDto dto = peopleForListDto.ElementAt(i);
+
+				dto.On = i + 1;
+
 				this.People.Add(dto);
 			}
 		}
-
-		//private IEnumerable<Person> GetPeopleFromDb()
-		//{
-		//	if (this.peopleDb == null)
-		//	{
-		//		this.peopleDb = new List<Person>();
-
-		//		Person person = new Person
-		//		{
-		//			Id = 1,
-		//			FirstName = "John",
-		//			LastName = "Kovalsky",
-		//			StreetName = "Wiejska",
-		//			HouseNumber = "1",
-		//			ApartmentNumber = "2",
-		//			PostalCode = "12-123",
-		//			PhoneNumber = "123456789",
-		//			BirthDate = DateTime.Now.AddYears(-30)
-		//		};
-
-		//		this.peopleDb.Add(person);
-		//	}
-
-		//	return this.peopleDb;
-		//}
-
-		//private void SavePeopleToDb(IList<Person> people)
-		//{
-		//	// repository here
-		//	this.personRepository.Save(people);
-		//}
 	}
 }
