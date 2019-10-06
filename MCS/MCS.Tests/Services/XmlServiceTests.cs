@@ -18,7 +18,7 @@ namespace MCS.Tests.Services
 		private const string filePathTmp = @"Resources\databasetmp.xml";
 
 		[TestMethod]
-		public void LoadXml_Test()
+		public void LoadXml_Success()
 		{
 			var target = new XmlService();
 
@@ -39,7 +39,7 @@ namespace MCS.Tests.Services
 		}
 
 		[TestMethod]
-		public void SaveXml_Test()
+		public void SaveXml_Success()
 		{
 			var list = new List<Person>
 			{
@@ -65,7 +65,7 @@ namespace MCS.Tests.Services
 		}
 
 		[TestMethod]
-		public void CheckFileExists_File_Not_Exists_Return_False_Test()
+		public void CheckFileExists_FileNotExists_ReturnFalse()
 		{
 			var target = new XmlService();
 
@@ -75,7 +75,7 @@ namespace MCS.Tests.Services
 		}
 
 		[TestMethod]
-		public void CheckFileExists_File_Exists_Return_True_Test()
+		public void CheckFileExists_FileExists_ReturnTrue()
 		{
 			var target = new XmlService();
 
@@ -85,7 +85,7 @@ namespace MCS.Tests.Services
 		}
 
 		[TestMethod]
-		public void CreateXmlFile_Test()
+		public void CreateXmlFile_Success()
 		{
 			var target = new XmlService();
 

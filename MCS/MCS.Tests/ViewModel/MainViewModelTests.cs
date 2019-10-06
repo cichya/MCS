@@ -27,7 +27,7 @@ namespace MCS.Tests.ViewModel
 		private string errorMsg;
 
 		[TestMethod]
-		public void AddNewPersonRowCommand_Test()
+		public void AddNewPersonRowCommand_Success()
 		{
 			var target = new MainViewModel(
 				mapperMock.Object,
@@ -50,7 +50,7 @@ namespace MCS.Tests.ViewModel
 		}
 
 		[TestMethod]
-		public void DeletePersonRowCommand_Delete_Existing_Person_Change_IsDeleted_To_True_Test()
+		public void DeletePersonRowCommand_DeleteExistingPerson_ChangeIsDeletedToTrue()
 		{
 			var target = new MainViewModel(
 				mapperMock.Object,
@@ -70,7 +70,7 @@ namespace MCS.Tests.ViewModel
 		}
 
 		[TestMethod]
-		public void DeletePersonRowCommand_Delete_New_Person_Remove_From_People_Test()
+		public void DeletePersonRowCommand_DeleteNewPerson_RemoveFromPeople()
 		{
 			this.dto.Add(new PersonForListDto
 			{
@@ -97,7 +97,7 @@ namespace MCS.Tests.ViewModel
 		}
 
 		[TestMethod]
-		public void SaveChangesCommand_Is_Valid_False_Function_Not_Execute_Test()
+		public void SaveChangesCommand_IsValidFalse_FunctionNotExecute()
 		{
 			var target = new MainViewModel(
 				mapperMock.Object,
@@ -125,7 +125,7 @@ namespace MCS.Tests.ViewModel
 		}
 
 		[TestMethod]
-		public void SaveChangesCommand_Is_Valid_True_Function_Execute_Test()
+		public void SaveChangesCommand_IsValidTrue_FunctionExecute()
 		{
 			var target = new MainViewModel(
 				mapperMock.Object,
@@ -152,7 +152,7 @@ namespace MCS.Tests.ViewModel
 		}
 
 		[TestMethod]
-		public void SaveChangesCommand_Save_Throw_Exception_Test()
+		public void SaveChangesCommand_SaveThrowException()
 		{
 			this.personRepositoryMock.Setup(m => m.Save(people)).Throws(new Exception("xxx"));
 
@@ -183,7 +183,7 @@ namespace MCS.Tests.ViewModel
 		}
 
 		[TestMethod]
-		public void DiscardChangesCommand_Test()
+		public void DiscardChangesCommand_Success()
 		{
 			var target = new MainViewModel(
 				this.mapperMock.Object,
