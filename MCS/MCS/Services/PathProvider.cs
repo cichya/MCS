@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MCS.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,7 +22,7 @@ namespace MCS.Services
 
 			if (String.IsNullOrEmpty(path))
 			{
-				throw new InvalidOperationException(this.messageStringManager.CannotFindCurrentUserProfilePathExceptionMessage);
+				throw new CannotCreateFileException(this.messageStringManager.CannotFindCurrentUserProfilePathExceptionMessage);
 			}
 
 			return path;

@@ -2,6 +2,7 @@ using AutoMapper;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using MCS.DTO;
+using MCS.Helpers;
 using MCS.Models;
 using MCS.Repositories;
 using MCS.Services;
@@ -150,7 +151,15 @@ namespace MCS.ViewModel
 
 			this.InitializeCanExecutes();
 
-			this.Refresh();
+			try
+			{
+				this.Refresh();
+			}
+			catch (CannotCreateFileException ex)
+			{
+				Logger.Error(ex);
+				this.messageBoxService.ShowErrorMsgBox(ex.Message);
+			}
 		}
 
 		private void AddNewPersonRow()
@@ -264,6 +273,11 @@ namespace MCS.ViewModel
 					this.IsValid = false;
 				}
 			}
+			catch (CannotCreateFileException ex)
+			{
+				Logger.Error(ex);
+				this.messageBoxService.ShowErrorMsgBox(ex.Message);
+			}
 			catch (Exception ex)
 			{
 				Logger.Error(ex);
@@ -285,6 +299,11 @@ namespace MCS.ViewModel
 
 				this.DiscardChangesButtonIsEnabled = false;
 				this.IsValid = false;
+			}
+			catch (CannotCreateFileException ex)
+			{
+				Logger.Error(ex);
+				this.messageBoxService.ShowErrorMsgBox(ex.Message);
 			}
 			catch (Exception ex)
 			{
