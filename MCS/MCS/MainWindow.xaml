@@ -14,7 +14,6 @@
 	<Window.Resources>
 		<ResourceDictionary>
 			<converters:BoolToDeleteButtonContentConverter x:Key="BoolToDeleteButtonContentConverter"/>
-			<BitmapImage x:Key="ErrorImageResource" UriSource="./Static/error.png" />
 			<Style x:Key="NewPersonDataGridRow" TargetType="{x:Type DataGridRow}">
 				<Setter Property="BorderBrush" Value="Green" />
 				<Setter Property="BorderThickness" Value="1" />
