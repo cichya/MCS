@@ -171,11 +171,13 @@ namespace MCS.ViewModel
 			{
 				this.IsBusy = true;
 
-				int id = this.People.Count > 0 ? this.People.Last().On + 1 : 1;
-
+				int on = this.People.Count > 0 ? this.People.Last().On + 1 : 1;
+				int id = this.People.Count > 0 ? this.People.Max(x => x.Id) + 1 : 1;
+				
 				this.People.Add(new PersonForListDto
 				{
-					On = id,
+					On = on,
+					Id = id,
 					IsNew = true
 				});
 
