@@ -31,15 +31,6 @@ namespace MCS.ViewModel
 	{
 		private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-		//private IList<Person> peopleDb;
-
-
-		public bool Errors { get; set; }
-
-
-		//public bool Errors { get { return errors; } set { errors = value; no } }
-
-
 		private readonly IMapper mapper;
 		private readonly IPersonRepository personRepository;
 		private readonly IMessageBoxService messageBoxService;
@@ -55,6 +46,9 @@ namespace MCS.ViewModel
 		private bool deletePersonRowCommandCanExecute;
 		private bool saveChangesCommandCanExecute;
 		private bool discardChangesCommandCanExecute;
+		private bool isBusy;
+		private bool isValid;
+		private bool discardChangesButtonIsEnabled;
 
 		public RelayCommand AddNewPersonRowCommand
 		{
@@ -108,8 +102,6 @@ namespace MCS.ViewModel
 
 		public ObservableCollection<PersonForListDto> People { get; set; }
 
-		private bool isBusy;
-
 		public bool IsBusy
 		{
 			get
@@ -123,8 +115,6 @@ namespace MCS.ViewModel
 			}
 		}
 
-		private bool isValid;
-
 		public bool IsValid
 		{
 			get
@@ -137,8 +127,6 @@ namespace MCS.ViewModel
 				this.RaisePropertyChanged(nameof(this.IsValid));
 			}
 		}
-
-		private bool discardChangesButtonIsEnabled;
 
 		public bool DiscardChangesButtonIsEnabled
 		{
@@ -323,12 +311,16 @@ namespace MCS.ViewModel
 			if (e.OldItems != null)
 			{
 				foreach (INotifyPropertyChanged item in e.OldItems)
+				{
 					item.PropertyChanged -= People_Item_PropertyChanged;
+				}
 			}
 			if (e.NewItems != null)
 			{
 				foreach (INotifyPropertyChanged item in e.NewItems)
+				{
 					item.PropertyChanged += People_Item_PropertyChanged;
+				}
 			}
 		}
 
@@ -367,36 +359,5 @@ namespace MCS.ViewModel
 				this.People.Add(dto);
 			}
 		}
-
-		//private IEnumerable<Person> GetPeopleFromDb()
-		//{
-		//	if (this.peopleDb == null)
-		//	{
-		//		this.peopleDb = new List<Person>();
-
-		//		Person person = new Person
-		//		{
-		//			Id = 1,
-		//			FirstName = "John",
-		//			LastName = "Kovalsky",
-		//			StreetName = "Wiejska",
-		//			HouseNumber = "1",
-		//			ApartmentNumber = "2",
-		//			PostalCode = "12-123",
-		//			PhoneNumber = "123456789",
-		//			BirthDate = DateTime.Now.AddYears(-30)
-		//		};
-
-		//		this.peopleDb.Add(person);
-		//	}
-
-		//	return this.peopleDb;
-		//}
-
-		//private void SavePeopleToDb(IList<Person> people)
-		//{
-		//	// repository here
-		//	this.personRepository.Save(people);
-		//}
 	}
 }
