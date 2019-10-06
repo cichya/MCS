@@ -18,54 +18,17 @@ namespace MCS.Tests.ViewModel
 	[TestClass]
 	public class MainViewModelTests
 	{
+		private List<Person> people;
+		private List<PersonForListDto> dto;
+		private Mock<IMapper> mapperMock;
+		private Mock<IPersonRepository> personRepositoryMock;
+		private Mock<IMessageBoxService> messageBoxServiceMock;
+		private Mock<IMessageStringManager> messageStringManagerMock;
+		private string errorMsg;
+
 		[TestMethod]
 		public void AddNewPersonRowCommand_Test()
 		{
-			List<Person> people = new List<Person>
-			{
-				new Person
-				{
-					Id = 1,
-					ApartmentNumber = "1",
-					BirthDate = DateTime.Now.AddYears(-20),
-					FirstName = "John",
-					HouseNumber = "2",
-					LastName = "Doe",
-					PhoneNumber = "123123",
-					PostalCode = "123-12",
-					StreetName = "Street"
-				}
-			};
-
-			var mapperMock = new Mock<IMapper>(MockBehavior.Strict);
-
-			List<PersonForListDto> dto = new List<PersonForListDto>
-			{
-				new PersonForListDto
-				{
-					Id = 1,
-					ApartmentNumber = "1",
-					BirthDate = DateTime.Now.AddYears(-20),
-					FirstName = "John",
-					HouseNumber = "2",
-					LastName = "Doe",
-					PhoneNumber = "123123",
-					PostalCode = "123-12",
-					StreetName = "Street",
-					Age = "1",
-					On = 1
-				}
-			};
-
-			mapperMock.Setup(m => m.Map<IEnumerable<PersonForListDto>>(people)).Returns(dto);
-
-			var personRepositoryMock = new Mock<IPersonRepository>(MockBehavior.Strict);
-
-			personRepositoryMock.Setup(m => m.Get()).Returns(people);
-
-			var messageBoxServiceMock = new Mock<IMessageBoxService>(MockBehavior.Strict);
-			var messageStringManagerMock = new Mock<IMessageStringManager>(MockBehavior.Strict);
-
 			var target = new MainViewModel(
 				mapperMock.Object,
 				personRepositoryMock.Object,
@@ -89,51 +52,6 @@ namespace MCS.Tests.ViewModel
 		[TestMethod]
 		public void DeletePersonRowCommand_Delete_Existing_Person_Change_IsDeleted_To_True_Test()
 		{
-			List<Person> people = new List<Person>
-			{
-				new Person
-				{
-					Id = 1,
-					ApartmentNumber = "1",
-					BirthDate = DateTime.Now.AddYears(-20),
-					FirstName = "John",
-					HouseNumber = "2",
-					LastName = "Doe",
-					PhoneNumber = "123123",
-					PostalCode = "123-12",
-					StreetName = "Street"
-				}
-			};
-
-			var mapperMock = new Mock<IMapper>(MockBehavior.Strict);
-
-			List<PersonForListDto> dto = new List<PersonForListDto>
-			{
-				new PersonForListDto
-				{
-					Id = 1,
-					ApartmentNumber = "1",
-					BirthDate = DateTime.Now.AddYears(-20),
-					FirstName = "John",
-					HouseNumber = "2",
-					LastName = "Doe",
-					PhoneNumber = "123123",
-					PostalCode = "123-12",
-					StreetName = "Street",
-					Age = "1",
-					On = 1
-				}
-			};
-
-			mapperMock.Setup(m => m.Map<IEnumerable<PersonForListDto>>(people)).Returns(dto);
-
-			var personRepositoryMock = new Mock<IPersonRepository>(MockBehavior.Strict);
-
-			personRepositoryMock.Setup(m => m.Get()).Returns(people);
-
-			var messageBoxServiceMock = new Mock<IMessageBoxService>(MockBehavior.Strict);
-			var messageStringManagerMock = new Mock<IMessageStringManager>(MockBehavior.Strict);
-
 			var target = new MainViewModel(
 				mapperMock.Object,
 				personRepositoryMock.Object,
@@ -154,56 +72,12 @@ namespace MCS.Tests.ViewModel
 		[TestMethod]
 		public void DeletePersonRowCommand_Delete_New_Person_Remove_From_People_Test()
 		{
-			List<Person> people = new List<Person>
+			this.dto.Add(new PersonForListDto
 			{
-				new Person
-				{
-					Id = 1,
-					ApartmentNumber = "1",
-					BirthDate = DateTime.Now.AddYears(-20),
-					FirstName = "John",
-					HouseNumber = "2",
-					LastName = "Doe",
-					PhoneNumber = "123123",
-					PostalCode = "123-12",
-					StreetName = "Street"
-				}
-			};
-
-			var mapperMock = new Mock<IMapper>(MockBehavior.Strict);
-
-			List<PersonForListDto> dto = new List<PersonForListDto>
-			{
-				new PersonForListDto
-				{
-					Id = 1,
-					ApartmentNumber = "1",
-					BirthDate = DateTime.Now.AddYears(-20),
-					FirstName = "John",
-					HouseNumber = "2",
-					LastName = "Doe",
-					PhoneNumber = "123123",
-					PostalCode = "123-12",
-					StreetName = "Street",
-					Age = "1",
-					On = 1
-				},
-				new PersonForListDto
-				{
-					Id = 2,
-					On = 2,
-					IsNew = true
-				}
-			};
-
-			mapperMock.Setup(m => m.Map<IEnumerable<PersonForListDto>>(people)).Returns(dto);
-
-			var personRepositoryMock = new Mock<IPersonRepository>(MockBehavior.Strict);
-
-			personRepositoryMock.Setup(m => m.Get()).Returns(people);
-
-			var messageBoxServiceMock = new Mock<IMessageBoxService>(MockBehavior.Strict);
-			var messageStringManagerMock = new Mock<IMessageStringManager>(MockBehavior.Strict);
+				Id = 2,
+				On = 2,
+				IsNew = true
+			});
 
 			var target = new MainViewModel(
 				mapperMock.Object,
@@ -225,55 +99,6 @@ namespace MCS.Tests.ViewModel
 		[TestMethod]
 		public void SaveChangesCommand_Is_Valid_False_Function_Not_Execute_Test()
 		{
-			List<Person> people = new List<Person>
-			{
-				new Person
-				{
-					Id = 1,
-					ApartmentNumber = "1",
-					BirthDate = DateTime.Now.AddYears(-20),
-					FirstName = "John",
-					HouseNumber = "2",
-					LastName = "Doe",
-					PhoneNumber = "123123",
-					PostalCode = "123-12",
-					StreetName = "Street"
-				}
-			};
-
-			var mapperMock = new Mock<IMapper>(MockBehavior.Strict);
-
-			List<PersonForListDto> dto = new List<PersonForListDto>
-			{
-				new PersonForListDto
-				{
-					Id = 1,
-					ApartmentNumber = "1",
-					BirthDate = DateTime.Now.AddYears(-20),
-					FirstName = "John",
-					HouseNumber = "2",
-					LastName = "Doe",
-					PhoneNumber = "123123",
-					PostalCode = "123-12",
-					StreetName = "Street",
-					Age = "1",
-					On = 1
-				}
-			};
-
-			mapperMock.Setup(m => m.Map<IEnumerable<PersonForListDto>>(people)).Returns(dto);
-
-			mapperMock.Setup(m => m.Map<IList<Person>>(dto)).Returns(people);
-
-			var personRepositoryMock = new Mock<IPersonRepository>(MockBehavior.Strict);
-
-			personRepositoryMock.Setup(m => m.Get()).Returns(people);
-
-			personRepositoryMock.Setup(m => m.Save(people));
-
-			var messageBoxServiceMock = new Mock<IMessageBoxService>(MockBehavior.Strict);
-			var messageStringManagerMock = new Mock<IMessageStringManager>(MockBehavior.Strict);
-
 			var target = new MainViewModel(
 				mapperMock.Object,
 				personRepositoryMock.Object,
@@ -302,55 +127,6 @@ namespace MCS.Tests.ViewModel
 		[TestMethod]
 		public void SaveChangesCommand_Is_Valid_True_Function_Execute_Test()
 		{
-			List<Person> people = new List<Person>
-			{
-				new Person
-				{
-					Id = 1,
-					ApartmentNumber = "1",
-					BirthDate = DateTime.Now.AddYears(-20),
-					FirstName = "John",
-					HouseNumber = "2",
-					LastName = "Doe",
-					PhoneNumber = "123123",
-					PostalCode = "123-12",
-					StreetName = "Street"
-				}
-			};
-
-			var mapperMock = new Mock<IMapper>(MockBehavior.Strict);
-
-			List<PersonForListDto> dto = new List<PersonForListDto>
-			{
-				new PersonForListDto
-				{
-					Id = 1,
-					ApartmentNumber = "1",
-					BirthDate = DateTime.Now.AddYears(-20),
-					FirstName = "John",
-					HouseNumber = "2",
-					LastName = "Doe",
-					PhoneNumber = "123123",
-					PostalCode = "123-12",
-					StreetName = "Street",
-					Age = "1",
-					On = 1
-				}
-			};
-
-			mapperMock.Setup(m => m.Map<IEnumerable<PersonForListDto>>(people)).Returns(dto);
-
-			mapperMock.Setup(m => m.Map<IList<Person>>(dto)).Returns(people);
-
-			var personRepositoryMock = new Mock<IPersonRepository>(MockBehavior.Strict);
-
-			personRepositoryMock.Setup(m => m.Get()).Returns(people);
-
-			personRepositoryMock.Setup(m => m.Save(people));
-
-			var messageBoxServiceMock = new Mock<IMessageBoxService>(MockBehavior.Strict);
-			var messageStringManagerMock = new Mock<IMessageStringManager>(MockBehavior.Strict);
-
 			var target = new MainViewModel(
 				mapperMock.Object,
 				personRepositoryMock.Object,
@@ -369,70 +145,16 @@ namespace MCS.Tests.ViewModel
 			Assert.IsFalse(target.DiscardChangesButtonIsEnabled);
 			Assert.IsFalse(target.IsValid);
 
-			mapperMock.Verify(m => m.Map<IEnumerable<PersonForListDto>>(people), Times.Exactly(2));
-			mapperMock.Verify(m => m.Map<IList<Person>>(dto), Times.Once);
-			personRepositoryMock.Verify(m => m.Save(people), Times.Once);
-			personRepositoryMock.Verify(m => m.Get(), Times.Once);
+			this.mapperMock.Verify(m => m.Map<IEnumerable<PersonForListDto>>(this.people), Times.Exactly(2));
+			this.mapperMock.Verify(m => m.Map<IList<Person>>(this.dto), Times.Once);
+			this.personRepositoryMock.Verify(m => m.Save(this.people), Times.Once);
+			this.personRepositoryMock.Verify(m => m.Get(), Times.Once);
 		}
 
 		[TestMethod]
 		public void SaveChangesCommand_Save_Throw_Exception_Test()
 		{
-			List<Person> people = new List<Person>
-			{
-				new Person
-				{
-					Id = 1,
-					ApartmentNumber = "1",
-					BirthDate = DateTime.Now.AddYears(-20),
-					FirstName = "John",
-					HouseNumber = "2",
-					LastName = "Doe",
-					PhoneNumber = "123123",
-					PostalCode = "123-12",
-					StreetName = "Street"
-				}
-			};
-
-			var mapperMock = new Mock<IMapper>(MockBehavior.Strict);
-
-			List<PersonForListDto> dto = new List<PersonForListDto>
-			{
-				new PersonForListDto
-				{
-					Id = 1,
-					ApartmentNumber = "1",
-					BirthDate = DateTime.Now.AddYears(-20),
-					FirstName = "John",
-					HouseNumber = "2",
-					LastName = "Doe",
-					PhoneNumber = "123123",
-					PostalCode = "123-12",
-					StreetName = "Street",
-					Age = "1",
-					On = 1
-				}
-			};
-
-			mapperMock.Setup(m => m.Map<IEnumerable<PersonForListDto>>(people)).Returns(dto);
-
-			mapperMock.Setup(m => m.Map<IList<Person>>(dto)).Returns(people);
-
-			var personRepositoryMock = new Mock<IPersonRepository>(MockBehavior.Strict);
-
-			personRepositoryMock.Setup(m => m.Get()).Returns(people);
-
-			personRepositoryMock.Setup(m => m.Save(people)).Throws(new Exception("xxx"));
-
-			string errorMsg = "err";
-
-			var messageBoxServiceMock = new Mock<IMessageBoxService>(MockBehavior.Strict);
-
-			messageBoxServiceMock.Setup(m => m.ShowErrorMsgBox(errorMsg));
-
-			var messageStringManagerMock = new Mock<IMessageStringManager>(MockBehavior.Strict);
-
-			messageStringManagerMock.SetupGet(p => p.ErrorMessageBoxContentMessage).Returns(errorMsg);
+			this.personRepositoryMock.Setup(m => m.Save(people)).Throws(new Exception("xxx"));
 
 			var target = new MainViewModel(
 				mapperMock.Object,
@@ -452,18 +174,39 @@ namespace MCS.Tests.ViewModel
 			Assert.IsTrue(target.DiscardChangesButtonIsEnabled);
 			Assert.IsTrue(target.IsValid);
 
-			mapperMock.Verify(m => m.Map<IEnumerable<PersonForListDto>>(people), Times.Once);
-			mapperMock.Verify(m => m.Map<IList<Person>>(dto), Times.Once);
-			personRepositoryMock.Verify(m => m.Save(people), Times.Once);
-			personRepositoryMock.Verify(m => m.Get(), Times.Once);
-			messageBoxServiceMock.Verify(m => m.ShowErrorMsgBox(errorMsg), Times.Once);
-			messageStringManagerMock.Verify(p => p.ErrorMessageBoxContentMessage, Times.Once);
+			this.mapperMock.Verify(m => m.Map<IEnumerable<PersonForListDto>>(this.people), Times.Once);
+			this.mapperMock.Verify(m => m.Map<IList<Person>>(this.dto), Times.Once);
+			this.personRepositoryMock.Verify(m => m.Save(this.people), Times.Once);
+			this.personRepositoryMock.Verify(m => m.Get(), Times.Once);
+			this.messageBoxServiceMock.Verify(m => m.ShowErrorMsgBox(this.errorMsg), Times.Once);
+			this.messageStringManagerMock.Verify(p => p.ErrorMessageBoxContentMessage, Times.Once);
 		}
 
 		[TestMethod]
 		public void DiscardChangesCommand_Test()
 		{
-			List<Person> people = new List<Person>
+			var target = new MainViewModel(
+				this.mapperMock.Object,
+				this.personRepositoryMock.Object,
+				this.messageBoxServiceMock.Object,
+				this.messageStringManagerMock.Object);
+
+			target.DiscardChangesCommand.Execute(null);
+
+			Assert.AreEqual(1, target.People.Count());
+			Assert.AreEqual(1, target.People[0].Id);
+			Assert.IsFalse(target.IsBusy);
+			Assert.IsFalse(target.IsValid);
+			Assert.IsFalse(target.DiscardChangesButtonIsEnabled);
+
+			mapperMock.Verify(m => m.Map<IEnumerable<PersonForListDto>>(people), Times.Exactly(2));
+			personRepositoryMock.Verify(m => m.Get(), Times.Exactly(2));
+		}
+
+		[TestInitialize]
+		public void Init()
+		{
+			this.people = new List<Person>
 			{
 				new Person
 				{
@@ -479,9 +222,7 @@ namespace MCS.Tests.ViewModel
 				}
 			};
 
-			var mapperMock = new Mock<IMapper>(MockBehavior.Strict);
-
-			List<PersonForListDto> dto = new List<PersonForListDto>
+			this.dto = new List<PersonForListDto>
 			{
 				new PersonForListDto
 				{
@@ -499,31 +240,22 @@ namespace MCS.Tests.ViewModel
 				}
 			};
 
-			mapperMock.Setup(m => m.Map<IEnumerable<PersonForListDto>>(people)).Returns(dto);
+			this.mapperMock = new Mock<IMapper>(MockBehavior.Strict);
+			this.personRepositoryMock = new Mock<IPersonRepository>(MockBehavior.Strict);
+			this.messageBoxServiceMock = new Mock<IMessageBoxService>(MockBehavior.Strict);
+			this.messageStringManagerMock = new Mock<IMessageStringManager>(MockBehavior.Strict);
 
-			var personRepositoryMock = new Mock<IPersonRepository>(MockBehavior.Strict);
+			this.mapperMock.Setup(m => m.Map<IList<Person>>(dto)).Returns(people);
+			this.mapperMock.Setup(m => m.Map<IEnumerable<PersonForListDto>>(people)).Returns(dto);
 
-			personRepositoryMock.Setup(m => m.Get()).Returns(people);
+			this.personRepositoryMock.Setup(m => m.Get()).Returns(people);
+			this.personRepositoryMock.Setup(m => m.Save(this.people));
 
-			var messageBoxServiceMock = new Mock<IMessageBoxService>(MockBehavior.Strict);
-			var messageStringManagerMock = new Mock<IMessageStringManager>(MockBehavior.Strict);
+			this.errorMsg = "err";
 
-			var target = new MainViewModel(
-				mapperMock.Object,
-				personRepositoryMock.Object,
-				messageBoxServiceMock.Object,
-				messageStringManagerMock.Object);
+			messageBoxServiceMock.Setup(m => m.ShowErrorMsgBox(errorMsg));
 
-			target.DiscardChangesCommand.Execute(null);
-
-			Assert.AreEqual(1, target.People.Count());
-			Assert.AreEqual(1, target.People[0].Id);
-			Assert.IsFalse(target.IsBusy);
-			Assert.IsFalse(target.IsValid);
-			Assert.IsFalse(target.DiscardChangesButtonIsEnabled);
-
-			mapperMock.Verify(m => m.Map<IEnumerable<PersonForListDto>>(people), Times.Exactly(2));
-			personRepositoryMock.Verify(m => m.Get(), Times.Exactly(2));
+			messageStringManagerMock.SetupGet(p => p.ErrorMessageBoxContentMessage).Returns(errorMsg);
 		}
 	}
 }
