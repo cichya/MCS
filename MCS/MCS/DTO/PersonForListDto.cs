@@ -14,40 +14,6 @@ namespace MCS.DTO
 		private bool isDeleted;
 		private Dictionary<string, string> errors;
 
-		public string this[string columnName]
-		{
-			get
-			{
-				switch (columnName)
-				{
-					case nameof(this.FirstName):
-						return this.ValidColumn(nameof(this.FirstName), this.FirstName);
-					case nameof(this.LastName):
-						return this.ValidColumn(nameof(this.LastName), this.LastName);
-					case nameof(this.StreetName):
-						return this.ValidColumn(nameof(this.StreetName), this.StreetName);
-					case nameof(this.HouseNumber):
-						return this.ValidColumn(nameof(this.HouseNumber), this.HouseNumber);
-					case nameof(this.PostalCode):
-						return this.ValidColumn(nameof(this.PostalCode), this.PostalCode);
-					case nameof(this.PhoneNumber):
-						return this.ValidColumn(nameof(this.PhoneNumber), this.PhoneNumber);
-					case nameof(this.BirthDate):
-						return this.ValidColumn(nameof(this.BirthDate), this.BirthDate.HasValue ? this.BirthDate.Value.ToString() : null);
-					default:
-						return null;
-				}
-			}
-		}
-
-		public bool HasError
-		{
-			get
-			{
-				return this.errors != null && this.errors.Count > 0;
-			}
-		}
-
 		public int On { get; set; }
 		public int Id { get; set; }
 		public string FirstName { get; set; }
@@ -93,7 +59,41 @@ namespace MCS.DTO
 			}
 		}
 
+		public bool HasError
+		{
+			get
+			{
+				return this.errors != null && this.errors.Count > 0;
+			}
+		}
+
 		public string Error => null;
+
+		public string this[string columnName]
+		{
+			get
+			{
+				switch (columnName)
+				{
+					case nameof(this.FirstName):
+						return this.ValidColumn(nameof(this.FirstName), this.FirstName);
+					case nameof(this.LastName):
+						return this.ValidColumn(nameof(this.LastName), this.LastName);
+					case nameof(this.StreetName):
+						return this.ValidColumn(nameof(this.StreetName), this.StreetName);
+					case nameof(this.HouseNumber):
+						return this.ValidColumn(nameof(this.HouseNumber), this.HouseNumber);
+					case nameof(this.PostalCode):
+						return this.ValidColumn(nameof(this.PostalCode), this.PostalCode);
+					case nameof(this.PhoneNumber):
+						return this.ValidColumn(nameof(this.PhoneNumber), this.PhoneNumber);
+					case nameof(this.BirthDate):
+						return this.ValidColumn(nameof(this.BirthDate), this.BirthDate.HasValue ? this.BirthDate.Value.ToString() : null);
+					default:
+						return null;
+				}
+			}
+		}
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
