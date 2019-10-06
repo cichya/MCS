@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ArrayOfPerson xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<Person>
+		<Id>1</Id>
+		<FirstName>John</FirstName>
+		<LastName>Doe</LastName>
+		<StreetName>Street</StreetName>
+		<HouseNumber>2</HouseNumber>
+		<ApartmentNumber>1</ApartmentNumber>
+		<PostalCode>123-12</PostalCode>
+		<PhoneNumber>123123</PhoneNumber>
+		<BirthDate>1999-10-05T16:13:23.7664672+02:00</BirthDate>
+	</Person>
+</ArrayOfPerson>
