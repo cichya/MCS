@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MCS.Helpers"
 		xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
 		xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Platform"
 		xmlns:converters="clr-namespace:MCS.Converters"
@@ -49,20 +48,7 @@
                                  Value="True">
 										<Setter Property="Background" Value="Red" />
 									</DataTrigger>
-									<!--<Trigger Property="Validation.HasError" Value="true">
-							<Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self},Path=(Validation.Errors)[0].ErrorContent}"/>
-						</Trigger>-->
 								</Style.Triggers>
-								<!--<Setter Property="ValidationErrorTemplate">
-						<Setter.Value>
-							<ControlTemplate>
-								<Image Source="{StaticResource ErrorImageResource}"
-									ToolTip="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGridRow}}, Path=(Validation.Errors)[0].ErrorContent}"
-									Margin="0"
-									Width="11" Height="11" />
-							</ControlTemplate>
-						</Setter.Value>
-					</Setter>-->
 							</Style>
 						</DataGrid.RowStyle>
 						<DataGrid.RowValidationErrorTemplate>

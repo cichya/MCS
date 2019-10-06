@@ -99,7 +99,6 @@
     <Compile Include="Converters\BoolToDeleteButtonContentConverter.cs" />
     <Compile Include="Converters\DataGridCellEditEndingEventArgsToPersonForListDtoConverter.cs" />
     <Compile Include="Helpers\AutoMapperProfile.cs" />
-    <Compile Include="Helpers\PersonCellValidationRules.cs" />
     <Compile Include="Languages\Lang.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
