@@ -13,7 +13,6 @@
 		DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
 	<Window.Resources>
 		<ResourceDictionary>
-			<converters:DataGridCellEditEndingEventArgsToPersonForListDtoConverter x:Key="DataGridCellEditEndingEventArgsToPersonForListDtoConverter"/>
 			<converters:BoolToDeleteButtonContentConverter x:Key="BoolToDeleteButtonContentConverter"/>
 			<BitmapImage x:Key="ErrorImageResource" UriSource="./Static/error.png" />
 			<Style x:Key="NewPersonDataGridRow" TargetType="{x:Type DataGridRow}">

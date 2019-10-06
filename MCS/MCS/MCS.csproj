@@ -97,7 +97,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\BoolToDeleteButtonContentConverter.cs" />
-    <Compile Include="Converters\DataGridCellEditEndingEventArgsToPersonForListDtoConverter.cs" />
     <Compile Include="Helpers\AutoMapperProfile.cs" />
     <Compile Include="Languages\Lang.Designer.cs">
       <AutoGen>True</AutoGen>
